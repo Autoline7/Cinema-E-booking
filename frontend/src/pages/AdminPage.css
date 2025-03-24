@@ -1,0 +1,347 @@
+#admin{
+    background-color: rgba(0, 0, 0);
+    display: flex;
+    height: 100%;
+    max-width: 100%px;
+}  
+
+.sidebar{
+    position: fixed;
+    background-color: white;
+    width: 81px;
+    height: 100vh;
+    display: flex inline;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar__logo{
+    padding-top: 10px;
+    padding-left: 5px;
+    color: black;
+    font-size: 20px;
+}
+
+.sidebar__logout{
+    color: black;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.admin__header {
+    font-size: 50px;
+    color: var(--primary-color);
+    margin: 20px;
+}
+
+.admin__welcome{
+    margin-top: 40px;
+    margin-left: 20px;
+    font-size: 50px;
+    color: white;
+    
+}
+
+.admin__container{
+    width: 100%;
+    margin-left: 82px;
+}
+
+.admin__nav{
+    margin-top: 80px;
+    margin-left: 40px;
+    margin-right: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.admin__nav__links{
+    display: flex;
+    gap: 45px;
+}
+
+.admin__nav__link{
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.active__link{
+    color: var(--primary-color);
+}
+
+
+.admin__nav__button{
+    font-weight: 600;
+    width: 180px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    margin: 12px 12px;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: var(--text--color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+
+.admin__movies, .admin__users, .admin__codes{
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 15px;
+    margin-top: 15px;
+    gap: 15px;
+    width: fit-content;
+}
+
+.admin__movie{
+    background-color: white;
+    width: calc(50% - 15px);
+    height: 450px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin__admin, .admin__customer{
+    background-color: white;
+    width: calc(50% - 15px);
+    height: 420px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin__code{
+    background-color: white;
+    width: 320px;
+    height: 180px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.admin__movie__header , .admin__customer__header, .admin__code__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+}
+
+.admin__movie__title, .admin__customer__title, .admin__code__title{
+    color: black;
+}
+
+.admin__movie__edit__button, .admin__customer__edit__button{
+    width: 60px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    margin: 12px 12px;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: var(--text--color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.admin__code__edit__button{
+    width: 60px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: var(--text--color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+
+.admin__movie__info, .admin__customer__info, .admin__code__info{
+    display: flex;
+    flex-direction: column;
+    color: black;
+    flex-wrap: wrap;
+    padding-left: 16px;
+    gap: 3px;
+}
+
+.admin__movie__trash, .admin__customer__trash, .admin__code__trash{
+    cursor: pointer;
+    font-size: 36px;
+    position: absolute;
+    color: var(--primary-color);
+    bottom: 10px;
+    right: 15px;
+}
+
+.admin__movie__form, .admin__customer__form{
+    background-color: white;
+    width: 700px;
+    margin-top: 15px;
+    height: fit-content;
+    overflow: hidden;
+    color: black;
+}
+
+.admin__movies__container, .admin__users__container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.admin__add__movie__title, .admin__add__customer__title{
+    padding-top: 10px;
+    text-align: center;
+    color: black;
+}
+
+.admin__add__movie__form, .admin__add__customer__form{
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 10px;
+}
+
+
+.admin__add__movie__form__button, .admin__add__customer__form__button{
+    font-weight: 600;
+    width: 180px;
+    height: 40px;
+    margin: 12px 12px;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: var(--text--color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.admin__add__movie__form__button__container, .admin__add__customer__form__button__container{
+    display: flex;
+    justify-content: center;
+}
+
+.admin__movie__view__info, .admin__customer__view__info{
+    width: 50px;
+    height: 16px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: var(--text--color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    font-size: 12px;
+}
+
+
+.admin__movie__show__view, .admin__customer__show__view{
+    background-color: lightgray;
+    height: fit-content;
+    width: 400px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: absolute;
+    color: black;
+    bottom: -30px;
+    left: -90px;
+    text-align: left;
+    z-index: 3;
+}
+
+.admin__movie__info__table, .admin__customer__info__table{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.admin__movie__td, .admin__customer__td{
+    padding: 4px;
+}
+
+.scrollable-content {
+    max-height: 250px; 
+    overflow-y: auto; 
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 8px; 
+    word-wrap: break-word; 
+    white-space: normal;
+  }
+
+  .admin__form__selector , .admin__customer__selector{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .admin__form__selector-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .admin__form__review__att{
+    font-size: 14px;
+    padding-left: 8px;
+    border: 1px black solid;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .admin__form__review__att__rating{
+    display: flex;
+    gap: 8px;
+  }
+
+  .admin__form__add__review__button, .admin__form__remove__review__button{
+    width: 150px;
+    height: 30px;
+    align-items: center;
+    margin: 2px;
+    border-radius: 9999px;
+    background-color: #e50914;;
+    color: var(--text--color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .admin__form__review__center{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .admin__form__required__fields{
+    font-size: 12px;
+  }
+
+
+  .admin__form__review__att__rating__addy{
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+
+

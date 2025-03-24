@@ -1,0 +1,65 @@
+.order-confirmation-container {
+    background-color: #141414;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+h1 {
+    color: #e50914;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.order-details {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: left;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.order-details h3 {
+    color: #e50914;
+    margin-bottom: 10px;
+}
+
+.order-details ul {
+    list-style: none;
+    padding: 0;
+}
+
+.order-details li {
+    background: #333;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.home-button {
+    background: #e50914;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 200px;
+    margin-top: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home-button:hover {
+    background: #b20710;
+}
