@@ -2,7 +2,6 @@ import React from 'react'
 
 const AdminCode = () => {
   return (
-    <div>
       <div className="admin__code">
               <div className="admin__code__header">
                 <h3 className="admin__code__title">Code 1</h3>
@@ -39,7 +38,7 @@ const AdminCode = () => {
                 <i className="material-symbols-outlined admin__code__trash">delete</i>
               </div>
             </div>
-    </div>
+
   )
 }
 

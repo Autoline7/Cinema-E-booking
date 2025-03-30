@@ -12,7 +12,6 @@ import axios from "axios";
 
 const AdminPage = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const admin = JSON.parse(localStorage.getItem("admin")) || null;
@@ -48,6 +47,7 @@ const AdminPage = () => {
   const [addMovieForm, setAddMovieForm] = useState(false);
   const [addCustomerForm, setCustomerForm] = useState(false);
   const [addAdminForm, setAdminForm] = useState(false);
+  const [addCodeForm, setCodeForm] = useState(false);
 
 
   return (
@@ -55,12 +55,12 @@ const AdminPage = () => {
         <Sidebar logout={logout} />
         <div className="admin__container">
           <Header loading={loading} userData={userData} />
-          <AdminNav setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm} setAdminForm={setAdminForm} addAdminForm={addAdminForm}/>
+          <AdminNav setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm} setAdminForm={setAdminForm} addAdminForm={addAdminForm} setAddCodeForm={setCodeForm} addCodeForm={addCodeForm}/>
           <hr />
           <Routes>
             <Route index element={<AdminMovies addMovieForm={addMovieForm}/>} />
             <Route path="Manage-Users" element={<AdminUsers addCustomerForm={addCustomerForm} addAdminForm={addAdminForm}/>} />
-            <Route path="Manage-PromoCodes" element={<AdminCodes />} />
+            <Route path="Manage-PromoCodes" element={<AdminCodes addCodeForm={addCodeForm} />} />
           </Routes>
         </div>
     </div>

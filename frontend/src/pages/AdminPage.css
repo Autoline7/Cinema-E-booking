@@ -121,11 +121,14 @@
 
 .admin__code{
     background-color: white;
-    width: 320px;
-    height: 180px;
+    width: calc(25% - 15px);
+    height: 300px;
     border-radius: 10px;
     position: relative;
+    overflow: hidden;
 }
+
+
 
 .admin__movie__header , .admin__customer__header, .admin__code__header{
     display: flex;
@@ -140,25 +143,12 @@
     color: black;
 }
 
-.admin__movie__edit__button, .admin__customer__edit__button{
+.admin__movie__edit__button, .admin__customer__edit__button, .admin__code__edit__button{
     width: 60px;
     height: 30px;
     justify-content: center;
     align-items: center;
     margin: 12px 12px;
-    border-radius: 9999px;
-    background-color: var(--primary-color);
-    color: var(--text--color);
-    outline: none;
-    border: none;
-    cursor: pointer;
-}
-
-.admin__code__edit__button{
-    width: 60px;
-    height: 30px;
-    justify-content: center;
-    align-items: center;
     border-radius: 9999px;
     background-color: var(--primary-color);
     color: var(--text--color);
@@ -195,7 +185,7 @@
     color: black;
 }
 
-.admin__movies__container, .admin__users__container{
+.admin__movies__container, .admin__users__container, .admin__codes__container{
     display: flex;
     flex-direction: row;
     width: 100%;

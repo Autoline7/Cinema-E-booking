@@ -1,7 +1,4 @@
 import InputField from "./InputField.jsx"
-import SocialSignUp from "./SocialSignUp.jsx"
-import { auth, db } from "../../firebase/firebase.js"
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../LogIn-SignUp.css";
@@ -36,8 +33,8 @@ const SignUp = () => {
     });
 
     useEffect(() => {
-        setIsAdmin(location.pathname.toLowerCase().includes("admin"));
-    }, [location.pathname]);
+        setIsAdmin(givenSecPass === "admin123");
+    }, [givenSecPass]);
 
     useEffect(() => {
         setCustomer((prevCustomer) => ({
@@ -56,18 +53,31 @@ const SignUp = () => {
 
     async function signUp(event) {
         event.preventDefault();
+            try {
+                // Send verification code
+                console.log(isAdmin)
+                if(isAdmin){
+                    const filteredData = JSON.stringify(formCustomer, (key, value) => 
+                        key === "address" || key === "isSubscriber" || key === "role" | key === "status" ? undefined : value
+                    );
+                    console.log("Data being sent for admin:", JSON.parse(filteredData));
+                    await axios.post("http://localhost:8080/api/admins", JSON.parse(filteredData));
+                    handleAlert();
 
-        try {
-            // Send verification code
-            const response = await axios.post("http://localhost:8080/api/customers/send-verification", { email });
-            console.log("Verification response:", response.data);
-            
-            // Show popup for user to enter the code
-            setShowPopup(true);
-            
-        } catch (error) {
-            console.error("Error sending verification code:", error.message);
-        }
+                    setTimeout(() => {
+                        navigate("/Log-In");
+                    }, 3000);
+                    
+                } else{
+                    const response = await axios.post("http://localhost:8080/api/customers/send-verification", { email });
+                    console.log("Verification response:", response.data);
+                    setShowPopup(true);
+                }
+                
+            } catch (error) {
+                console.error("Error sending verification code:", error.message);
+            }
+        
     }
 
     async function verifyCodeAndCreateAccount() {
@@ -98,11 +108,8 @@ const SignUp = () => {
     return (
         <div id="Log-In-Sign-Up">
             <div className="login-container">
-                <h2 className="form-title">Sign Up with</h2>
-                <SocialSignUp />
-
-                <p className="separator"><span>or</span></p>
-
+                <h2 className="form-title">Sign Up</h2>
+                
                 <h2 className="form-title">Create Account</h2>
                 <form onSubmit={signUp} action="#" className="login-form">
                     <p className="registration__fields">* Required *</p>
@@ -121,7 +128,7 @@ const SignUp = () => {
                         <>
                             <p className="registration__fields">* Required *</p>
                             <InputField value={givenSecPass} type="password" placeholder="Admin Security Password.....(6 >= characters)" icon="lock" onChange={(e) => setGivenSecPass(e.target.value)} />
-                            <button disabled={givenSecPass !== "admin123"} type="submit" className="login-button">Create Account</button>
+                            <button disabled={!isAdmin} type="submit" className="login-button">Create Account</button>
                         </>
                     ) : (
                         <button type="submit" className="login-button">Create Account</button>

@@ -1,5 +1,4 @@
 import InputField from "./InputField";
-import SocialLogin from "./SocialLogin";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -54,10 +53,8 @@ const LogIn = () => {
   return (
     <div id="Log-In-Sign-Up">
       <div className="login-container">
-        <h2 className="form-title">Log in with</h2>
-        <SocialLogin />
-
-        <p className="separator"><span>or</span></p>
+        <h2 className="form-title">Log in</h2>
+      
 
         <form onSubmit={logIn} className="login-form">
           <InputField 
