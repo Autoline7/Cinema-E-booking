@@ -7,7 +7,7 @@ const AddCodeForm = () => {
     promoCode: "",
     description: "",
     discountPercentage: "",
-    expirationDate: "",
+    expirationDate: ""
   });
 
   /* { "promoCode": "SAVE10", "description": "Get 10% off all tickets!", "discountPercentage": 10.00, "expirationDate": "2025-12-31" } */
