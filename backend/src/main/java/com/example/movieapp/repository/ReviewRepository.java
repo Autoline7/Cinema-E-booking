@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
-    List<Review> findByMovieId(int movieId);  // Fetch all reviews for a given movie
+    List<Review> findByMovieId(int movieId); 
 }

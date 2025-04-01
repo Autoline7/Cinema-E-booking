@@ -17,9 +17,10 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
     List<Movie> findByCastContainingIgnoreCase(String cast);
     List<Movie> findByDirectorContainingIgnoreCase(String director);
     List<Movie> findByProducerContainingIgnoreCase(String producer);
-    List<Movie> findByMpaa(MPAARating mpaa); // Fix: Use Enum instead of String
-    Optional<Movie> findFirstByTitleContainingIgnoreCase(String title); // Optimized for single result
+    List<Movie> findByMpaa(MPAARating mpaa);
+    Optional<Movie> findFirstByTitleContainingIgnoreCase(String title);
 
+    // This is what allows the flexible parameter search in the GET request for movies
     @Query("SELECT m FROM Movie m WHERE " +
             "(:id IS NULL OR m.id = :id) AND " +
             "(:title IS NULL OR LOWER(m.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +

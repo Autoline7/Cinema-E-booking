@@ -23,12 +23,13 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
+    // Send registration verification email
     public void sendVerificationEmail(String to, String code) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            // ✅ Handle UnsupportedEncodingException
+            // Handle UnsupportedEncodingException
             try {
                 helper.setFrom("jacobcromer01@gmail.com", "Group 12 Cinema e-Booking");
             } catch (java.io.UnsupportedEncodingException e) {
@@ -44,12 +45,13 @@ public class EmailService {
         }
     }
 
+    // Send registration confirmation email
     public void sendConfirmationEmail(String to) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            // ✅ Handle UnsupportedEncodingException
+            // Handle UnsupportedEncodingException
             try {
                 helper.setFrom("jacobcromer01@gmail.com", "Group 12 Cinema e-Booking");
             } catch (java.io.UnsupportedEncodingException e) {
@@ -65,12 +67,13 @@ public class EmailService {
         }
     }
 
+    // Send password reset code
     public void sendPasswordResetCode(String to, String code) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            // ✅ Handle UnsupportedEncodingException
+            // Handle UnsupportedEncodingException
             try {
                 helper.setFrom("jacobcromer01@gmail.com", "Group 12 Cinema e-Booking");
             } catch (java.io.UnsupportedEncodingException e) {
@@ -88,12 +91,13 @@ public class EmailService {
         }
     }
 
+    // Send password reset confirmation email
     public void sendPasswordResetConfirmation(String to) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            // ✅ Handle UnsupportedEncodingException
+            // Handle UnsupportedEncodingException
             try {
                 helper.setFrom("jacobcromer01@gmail.com", "Group 12 Cinema e-Booking");
             } catch (java.io.UnsupportedEncodingException e) {
@@ -114,12 +118,13 @@ public class EmailService {
         }
     }
 
+    // Send personal information changed confirmation email
     public void sendProfileUpdateConfirmation(String to) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            // ✅ Handle UnsupportedEncodingException
+            // Handle UnsupportedEncodingException
             try {
                 helper.setFrom("jacobcromer01@gmail.com", "Group 12 Cinema e-Booking");
             } catch (java.io.UnsupportedEncodingException e) {
@@ -136,12 +141,13 @@ public class EmailService {
         }
     }
 
+    // Send promotional email to all subscribers
     public void sendPromotionEmail(String to, String description, BigDecimal discount, Date expirationDate) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            // ✅ Handle UnsupportedEncodingException
+            // Handle UnsupportedEncodingException
             try {
                 helper.setFrom("jacobcromer01@gmail.com", "Group 12 Cinema e-Booking");
             } catch (java.io.UnsupportedEncodingException e) {

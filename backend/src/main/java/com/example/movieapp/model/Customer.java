@@ -38,18 +38,18 @@ public class Customer {
     private Status status = Status.ACTIVE;
 
     @Column(name = "is_subscriber", nullable = false)
-    private boolean isSubscriber;
+    private Boolean isSubscriber;
 
 
     @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = true)
-    private Address address; // Optional field
+    private Address address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<PaymentCard> paymentCards;
 
-     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private java.sql.Timestamp createdAt;
 
     @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
@@ -66,7 +66,7 @@ public class Customer {
 
     public Customer() {}
 
-    public Customer(String firstName, String lastName, String email, String decryptedPassword, Status status, boolean isSubscriber, Address address) {
+    public Customer(String firstName, String lastName, String email, String decryptedPassword, Status status, Boolean isSubscriber, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -88,7 +88,6 @@ public class Customer {
         return true;
     }
 
-    // ✅ Getters & Setters
     public Role getRole() {
         return role;
     }
@@ -155,11 +154,11 @@ public class Customer {
         this.status = status;
     }
 
-    public boolean getIsSubscriber() {
+    public Boolean getIsSubscriber() {
         return isSubscriber;
     }
 
-    public void setIsSubscriber(boolean subscriber) {
+    public void setIsSubscriber(Boolean subscriber) {
         isSubscriber = subscriber;
     }
 

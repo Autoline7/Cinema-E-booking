@@ -9,11 +9,13 @@ public class PasswordResetCodeStore {
     private static final Map<String, Long> expirationStorage = new ConcurrentHashMap<>();
     private static final long EXPIRATION_TIME_MS = TimeUnit.MINUTES.toMillis(10); // 10-minute expiration
 
+    // Store a code
     public static void storeCode(String email, String code) {
         codeStorage.put(email, code);
         expirationStorage.put(email, System.currentTimeMillis() + EXPIRATION_TIME_MS);
     }
 
+    // Verify a code
     public static boolean verifyCode(String email, String code) {
         Long expirationTime = expirationStorage.get(email);
         if (expirationTime == null || expirationTime < System.currentTimeMillis()) {
@@ -22,6 +24,7 @@ public class PasswordResetCodeStore {
         return code.equals(codeStorage.get(email));
     }
 
+    // Remove code from storage
     public static void removeCode(String email) {
         codeStorage.remove(email);
         expirationStorage.remove(email);

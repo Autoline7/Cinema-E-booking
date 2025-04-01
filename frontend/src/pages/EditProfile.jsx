@@ -37,8 +37,9 @@ const EditProfile = () => {
         paymentCards,
         password: password || undefined,
         currentPassword: password ? currentPassword : undefined,
-        isSubscriber,
+        isSubscriber : isSubscriber,
       };
+      console.log(updatedData);
 
       await axios.put(`http://localhost:8080/api/customers/${customerId}`, updatedData);
       alert("Profile updated successfully!");

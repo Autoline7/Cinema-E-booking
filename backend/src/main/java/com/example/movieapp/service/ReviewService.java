@@ -21,31 +21,31 @@ public class ReviewService {
         this.movieRepository = movieRepository;
     }
 
-    // ✅ Add a review by movie ID
+    // Add review by movie ID
     public Review addReviewByMovieId(int movieId, Review review) {
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (movie.isPresent()) {
             review.setMovieId(movieId);
             return reviewRepository.save(review);
         }
-        return null; // If movie not found, return null
+        return null;
     }
 
-     // ✅ Add a review by movie title
+     // Add review by movie title
     public Review addReviewByMovieTitle(String title, Review review) {
         Optional<Movie> movie = movieRepository.findFirstByTitleContainingIgnoreCase(title);
         if (movie.isPresent()) {
             review.setMovieId(movie.get().getId());
             return reviewRepository.save(review);
         }
-        return null; // If movie not found, return null
+        return null;
     }
 
     public List<Review> getReviewsForMovie(int movieId) {
         return reviewRepository.findByMovieId(movieId);
     }
 
-    // ✅ Delete a review by ID
+    // Delete review by ID
     public boolean deleteReviewById(int reviewId) {
         if (reviewRepository.existsById(reviewId)) {
             reviewRepository.deleteById(reviewId);

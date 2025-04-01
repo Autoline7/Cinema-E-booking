@@ -44,10 +44,8 @@ public class Admin {
     @Transient
     private String decryptedPassword;
 
-    // Default constructor
     public Admin() {}
 
-    // Constructor with parameters
     public Admin(String firstName, String lastName, String email, String decryptedPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,7 +59,6 @@ public class Admin {
 
     }
 
-    // Getters and setters
     public int getUserId() {
         return userId;
     }

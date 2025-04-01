@@ -13,39 +13,33 @@ const LogIn = () => {
     e.preventDefault();
 
     try {
-      console.log("Trying customer login...");
+      console.log("Trying Login...");
 
       // Attempt to log in as a customer
-      const customerResponse = await axios.post("http://localhost:8080/api/customers/login", {
+      const logResponse = await axios.post("http://localhost:8080/api/customers/login", {
         email,
         password
       });
-
-      const response = await axios.get(`http://localhost:8080/api/customers/email/${email}`);
-      localStorage.setItem("customer", JSON.stringify(response.data));
-
-      console.log("Customer login successful:", customerResponse.data);
-      navigate("/User-Dashboard"); // Redirect if customer login succeeds
-      return;
-    } catch (customerError) {
-      console.log("Customer login failed. Trying admin login...");
-    }
-
-    try {
-      // Attempt to log in as an admin
-      const adminResponse = await axios.post("http://localhost:8080/api/admins/login", {
-        email,
-        password
-      });
+      const role = logResponse.data.role;
       
-      const response = await axios.get(`http://localhost:8080/api/admins/email/${email}`);
-      localStorage.setItem("admin", JSON.stringify(response.data));
+      
+      if(role === "ADMIN"){
+        const response = await axios.get(`http://localhost:8080/api/admins/email/${email}`);
+        console.log(response);
+        localStorage.setItem("admin", JSON.stringify(response.data));
+        console.log("Login successful");
+        navigate("/Admin-DashBoard");
 
-
-      console.log("Admin login successful:", adminResponse.data);
-      navigate("/Admin-DashBoard"); // Redirect if admin login succeeds
-    } catch (adminError) {
-      console.error("Both customer and admin login failed.");
+      } else if(role === "CUSTOMER"){
+        const response = await axios.get(`http://localhost:8080/api/customers/email/${email}`);
+        console.log(response);
+        localStorage.setItem("customer", JSON.stringify(response.data));
+        console.log("Login successful");
+        navigate("/User-Dashboard");
+      }
+      return;
+    } catch (e) {
+      console.log("Login failed.");
       alert("Invalid Email or Password. Please try again.");
     }
   }

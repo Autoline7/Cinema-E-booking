@@ -42,20 +42,9 @@ const AddAdminForm = () => {
       handleAlert();
       setTimeout(() => window.location.reload(), 3000);
     } catch (error) {
-      console.error("Error creating customer or processing data:", error);
-      if (error.response) {
-        console.error("Server responded with:", error.response.data);
-        alert(
-          `Server Error: ${error.response.data.message ||
-            error.response.statusText}`
-        );
-      } else if (error.request) {
-        console.error("No response received:", error.request);
-        alert("No response received from the server.");
-      } else {
-        console.error("Error setting up the request:", error.message);
+      console.error("Error creating customer or processing data:", error);  
+        console.error("Error:", error.message);
         alert(`An error occurred: ${error.message}`);
-      }
     }
   };
 

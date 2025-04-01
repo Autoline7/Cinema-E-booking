@@ -18,16 +18,17 @@ public class AddressService {
         this.addressRepository = addressRepository;
     }
 
+    // Get all adresses
     public List<Address> getAllAddresses() {
         return addressRepository.findAll();
     }
 
-     // ✅ Get an address by ID
+     // Get address by ID
     public Optional<Address> getAddressById(int id) {
         return addressRepository.findById(id);
     }
 
-    // ✅ Delete an address (only if not referenced)
+    // Delete an address
     public boolean deleteAddress(int id) {
         Optional<Address> address = addressRepository.findById(id);
         if (address.isPresent()) {
@@ -35,9 +36,9 @@ public class AddressService {
                 addressRepository.deleteById(id);
                 return true;
             } catch (Exception e) {
-                return false;  // Deletion failed due to foreign key constraint
+                return false;
             }
         }
-        return false;  // Address not found
+        return false;
     }
 }

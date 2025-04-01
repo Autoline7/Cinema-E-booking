@@ -128,8 +128,8 @@ backend/
 ---
 
 ## Backend Explanation
-| Layer       | File                          | Purpose                                  |
-|------------|------------------------------|------------------------------------------|
+| Layer      | File                          | Purpose                                  |
+|------------|-------------------------------|------------------------------------------|
 | Main       | MovieappApplication.java      | Starts the application                   |
 | Controller | MovieController.java          | Handles API requests for movies          |
 | Controller | ReviewController.java         | Handles API requests for reviews         |
@@ -231,17 +231,19 @@ a specific customer.
 
 
 ### 💳 Payment Card Endpoints
-| Method     | Endpoint                                      | Request Body (if needed)                                            | Description                                   |
-|------------|---------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------|
+| Method     | Endpoint                                   | Request Body (if needed)                                          | Description                                   |
+|------------|--------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------|
 | **GET**    | `/api/payment-cards`                       | None                                                              | Fetches all payment cards                     |
 | **GET**    | `/api/payment-cards/{id}`                  | None                                                              | Fetches a specific payment card by ID         |
 | **GET**    | `/api/payment-cards/customer/{id}`         | None                                                              | Fetches all payment cards for a specific customer ID|
 | **POST**   | `/api/payment-cards/customer/{customerId}` | `{ "decryptedCardNumber": "1234567812345678", "expirationDate": "2026-12-31", "decryptedCvv": "123" }` | Adds a new card using the customer's registered address |
+| **PUT**   | `/api/payment-cards/{id}` | `{"paymentCard": { "decryptedCardNumber": "1234567812345678", "decryptedCvv": "123", "expirationDate": "2026-12-31" }, "billingAddress": { "street": "123 Main St", "city": "New York",
+"state": "NY", "zipCode": "10001", "country": "USA"} }` | Updates an existing card by ID. |
 | **POST**   | `/api/payment-cards/customer/{customerId}/new-address` | `{ "paymentCard": { "decryptedCardNumber": "9876543210987654", "expirationDate": "2025-11-30", "decryptedCvv": "456" }, "billingAddress": { "street": "456 Elm St", "city": "Los Angeles", "state": "CA", "zipCode": "90001", "country": "USA" } }` | Adds a new payment card with a new billing address |
 | **DELETE** | `/api/payment-cards/{id}`                  | None                                                              | Deletes a payment card by ID                  |
-| **GET**    | `/api/payment-cards/{id}/decrypt-card`     | None                                                              | Retrieves the decrypted card number (secure use only) |
-| **GET**    | `/api/payment-cards/{id}/decrypt-cvv`      | None                                                              | Retrieves the decrypted CVV (secure use only) |
-
+| **GET**    | `/api/payment-cards/{id}/decrypt-card`     | None                                                              | Retrieves the decrypted card number (seccure use only) |
+ure use only) |
+| **GET**    | `/api/payment-cards/{id}/decrypt-cvv`      | None                                                              | Retrieves the decrypted CVV (se
 Payment cards can be a little strict as well. Make sure that you keep card numbers at 16 digits and CVVs at 3. They allow for a little more than that actually, but that was just 
 a safety measure. You will receive an error message (not an uncaught error) if you try and insert a card to a customer that already has 3, as that is one of the requirements of the
 project. Again, this will not crash the system, but it will notify you if you try it. Lastly, for the dates we are using a specific library that expects this date format of
@@ -317,6 +319,7 @@ for an admin will also work for a customer.
 |------------|---------------------------------------------|-------------------------------------------------------------------|-----------------------------------------------|
 | **POST**   | `/api/promotions`                          | `{ "promoCode": "SAVE10", "description": "Get 10% off all tickets!", "discountPercentage": 10.00, "expirationDate": "2025-12-31" }` | Creates a new promotion and sends an email to all subscribed customers |
 | **GET**    | `/api/promotions/{id}`                     | None                                                              | Fetches a promotion by its ID                 |
+| **GET**    | `/api/promotions`                          | None                                                              | Fetches all promotions                        |
 | **PUT**    | `/api/promotions/{id}`                     | `{ "description": "Updated discount for the holidays!", "discountPercentage": 15.00, "expirationDate": "2025-12-31" }` | Updates an existing promotion (excluding the promo code) |
 | **DELETE** | `/api/promotions/{id}`                     | None                                                              | Deletes a promotion by ID                     |
 
@@ -374,6 +377,7 @@ Keep in mind this project is running in Java 17, specifically 17.0.4.
 Anyone in the frontend running the project should already have node.js installed but can check with:
 node -v
 npm -v
+
 
 
 

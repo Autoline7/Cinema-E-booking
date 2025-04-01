@@ -54,45 +54,47 @@ const AddCodeForm = () => {
           Note: Required = <span className="red">*</span>
         </p>
 
-        <label htmlFor="firstName">
-          <span className="red">*</span> Promo Code:
+        <label htmlFor="promoCode">
+          <span className="red">*</span> Promo Code (4 chars max):
         </label>
         <input
           type="text"
-          name="firstName"
+          name="promoCode"
           value={formData.promoCode}
           onChange={handleChange}
           required
+          maxLength={4}
         />
 
-        <label htmlFor="lastName">
+
+        <label htmlFor="description">
           <span className="red">*</span> Description:
         </label>
         <input
           type="text"
-          name="lastName"
+          name="description"
           value={formData.description}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="email">
+        <label htmlFor="discountPercentag">
           <span className="red">*</span> Discount Percentage (0.00 - 100.00):
         </label>
         <input
-          type="email"
-          name="email"
-          value={formData.email}
+          type="text"
+          name="discountPercentage"
+          value={formData.discountPercentage}
           onChange={handleChange}
           required
         />
 
-        <label htmlFor="decryptedPassword">
-          <span className="red">*</span> Password:
+        <label htmlFor="expirationDate">
+          <span className="red">*</span> Expiration Date:
         </label>
         <input
           type="date"
-          name="decryptedPassword"
+          name="expirationDate"
           value={formData.expirationDate}
           onChange={handleChange}
           required

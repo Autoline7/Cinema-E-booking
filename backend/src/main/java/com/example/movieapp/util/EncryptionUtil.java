@@ -12,10 +12,10 @@ import java.util.Base64;
 public class EncryptionUtil {
 
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
-    private static final String SECRET_KEY = "1234567890123456"; // Change this and store securely
-    private static final String IV = "1234567890123456"; // IV should be unique per encryption, stored per record ideally
+    private static final String SECRET_KEY = "1234567890123456"; 
+    private static final String IV = "1234567890123456";
 
-    // ✅ Encrypts data using AES
+    // Encrypts data using AES
     public static String encrypt(String plainText) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -31,7 +31,7 @@ public class EncryptionUtil {
         }
     }
 
-    // ✅ Decrypts data using AES
+    // Decrypts data using AES
     public static String decrypt(String encryptedText) {
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -48,6 +48,7 @@ public class EncryptionUtil {
         }
     }
 
+    // Check if a password matches for login
     public static boolean verifyPassword(String inputPassword, String storedHash) {
         return encrypt(inputPassword).equals(storedHash);
     }

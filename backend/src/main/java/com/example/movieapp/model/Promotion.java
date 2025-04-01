@@ -23,12 +23,10 @@ public class Promotion {
     private Date expirationDate;
 
     @Column(name = "promo_code", length = 4, nullable = false, unique = true)
-    private String promoCode; // 🔹 New field for promo code
+    private String promoCode;
 
-    // Default constructor
     public Promotion() {}
 
-    // Constructor with parameters
     public Promotion(String description, BigDecimal discountPercentage, Date expirationDate, String promoCode) {
         this.description = description;
         this.discountPercentage = discountPercentage;
@@ -36,7 +34,6 @@ public class Promotion {
         this.promoCode = promoCode;
     }
 
-    // Getters and Setters
     public int getPromoId() {
         return promoId;
     }

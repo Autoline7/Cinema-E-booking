@@ -154,7 +154,7 @@ const AddMovieForm = () => {
                 <Selector options={mpaaOptions} selectedValue={formData.mpaa} onChange={(value) => setFormData(prevData => ({ ...prevData, mpaa: value }))} name="mpaa" required={true}/>
 
 
-                {/* <label htmlFor="date">Select Dates:</label>
+                <label htmlFor="date">Select Dates:</label>
                 <input type='date' onChange={handleDateChange} />
 
                 {Object.keys(datesWithShowtimes).map((date) => (
@@ -179,7 +179,7 @@ const AddMovieForm = () => {
                     <p key={date}>
                         <strong>{date}:</strong> {times.length > 0 ? times.join(", ") : "No showtimes selected"}
                     </p>
-                ))} */}
+                ))}
 
                 <div className='admin__add__movie__form__button__container'>
                     <button className='admin__add__movie__form__button' type="submit">Create Movie</button>

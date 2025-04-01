@@ -1,6 +1,6 @@
 package com.example.movieapp.model;
 
-import jakarta.persistence.*;  // JPA annotations
+import jakarta.persistence.*; 
 import java.util.List;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -15,7 +15,7 @@ public class Movie {
     private int id;
     private String title;
     private String genre;
-    private String cast;  // Still stored as String in DB, but will be converted to List<String> in Java
+    private String cast;
     private String director;
     private String producer;
     private String synopsis;
@@ -23,19 +23,19 @@ public class Movie {
     private String video;
 
     @Enumerated(EnumType.STRING)
-    private MPAARating mpaa;  // Changed to Enum
+    private MPAARating mpaa;
 
     @Transient
-    private List<String> castList;  // This will hold the parsed list of cast members
+    private List<String> castList; 
 
     @Transient
-    private List<String> directorList;  // This will hold the parsed list of directors
+    private List<String> directorList;  
 
     @Transient
-    private List<String> producerList; // This will hold the parsed list of producers
+    private List<String> producerList;
 
     @Transient
-    private List<Review> reviews;  // Automatically fetch reviews for this movie
+    private List<Review> reviews; 
 
     public Movie() {}
 
@@ -53,7 +53,7 @@ public class Movie {
         this.mpaa = mpaa;
     }
 
-    @PostLoad  // This runs after the object is loaded from the database
+    @PostLoad
     private void parseCastAndDirectorAndProducer() {
         if (this.cast != null) {
             this.castList = Arrays.stream(this.cast.split(", "))
@@ -72,32 +72,26 @@ public class Movie {
         }
     }
 
-    // Getter for producer List
     public List<String> getProducerList() {
         return producerList;
     }
 
-    // Getter for cast list
     public List<String> getCastList() {
         return castList;
     }
 
-    // Getter for director list
     public List<String> getDirectorList() {
         return directorList;
     }
 
-    // Getter for reviews (to be set from MovieService)
     public List<Review> getReviews() {
         return reviews;
     }
 
-    // Setter for reviews (called from MovieService)
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 
-    // Getters and Setters for other fields
     public int getId() {
         return id;
     }
@@ -132,18 +126,18 @@ public class Movie {
 
     public void setCast(String cast) {
         this.cast = cast;
-        parseCastAndDirectorAndProducer();  // Update cast list when cast string is changed
+        parseCastAndDirectorAndProducer(); 
     }
 
     public void setDirector(String director) {
-    this.director = director;
-    parseCastAndDirectorAndProducer();  // Update director list when director string is changed
-}
+        this.director = director;
+        parseCastAndDirectorAndProducer();
+    }
 
-public void setProducer(String producer) {
-    this.producer = producer;
-    parseCastAndDirectorAndProducer();  // Update producer list when producer string is changed
-}
+    public void setProducer(String producer) {
+        this.producer = producer;
+        parseCastAndDirectorAndProducer(); 
+    }
 
     public String getProducer() {
         return producer;

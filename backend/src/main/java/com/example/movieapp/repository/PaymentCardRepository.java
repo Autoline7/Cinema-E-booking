@@ -10,8 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface PaymentCardRepository extends JpaRepository<PaymentCard, Integer> {
-    Optional<PaymentCard> findByEncryptedCardNumber(String encryptedCardNumber); // ✅ Check for duplicates
+    Optional<PaymentCard> findByEncryptedCardNumber(String encryptedCardNumber);
 
-    long countByCustomer(Customer customer);  // ✅ New method to count cards
+    long countByCustomer(Customer customer);
     List<PaymentCard> findByCustomerUserId(int customerId);
 }

@@ -19,13 +19,13 @@ public class PromotionController {
     @Autowired
     private PromotionService promotionService;
 
-    // Get all admins
+    // Get all promotions
     @GetMapping
     public ResponseEntity<List<Promotion>> getAllPromotions() {
         return ResponseEntity.ok(promotionService.getAllPromotions());
     }
 
-
+    // Create new promotion
     @PostMapping
     public ResponseEntity<?> createPromotion(@RequestBody Promotion promotion) {
         try {
@@ -36,6 +36,7 @@ public class PromotionController {
         }
     }
 
+    // Get promotion by ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getPromotionById(@PathVariable int id) {
         Optional<Promotion> promotion = promotionService.getPromotionById(id);
@@ -47,7 +48,7 @@ public class PromotionController {
         }
     }
 
-    // 🔹 UPDATE promotion by ID
+    // Update promotion by ID
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePromotion(@PathVariable int id, @RequestBody Map<String, Object> updates) {
         try {
@@ -58,7 +59,7 @@ public class PromotionController {
         }
     }
 
-    // 🔹 DELETE promotion by ID
+    // Delete promotion by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePromotionById(@PathVariable int id) {
         boolean deleted = promotionService.deletePromotionById(id);

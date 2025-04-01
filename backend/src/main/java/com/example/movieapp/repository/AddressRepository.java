@@ -8,7 +8,6 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Integer> {
 
-    // ✅ Find an existing address with all matching fields
     Optional<Address> findByStreetAndCityAndStateAndZipCodeAndCountry(
         String street, String city, String state, String zipCode, String country
     );

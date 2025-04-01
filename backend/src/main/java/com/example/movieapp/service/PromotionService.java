@@ -24,10 +24,12 @@ public class PromotionService {
     @Autowired
     private EmailService emailService;
 
+    // Get all promotions
     public List<Promotion> getAllPromotions() {
         return promotionRepository.findAll();
     }
 
+    // Create new promotion
     public Promotion createPromotion(Promotion promotion) {
         // Ensure expiration date is stored as java.sql.Date
         if (promotion.getExpirationDate() != null) {
@@ -56,12 +58,12 @@ public class PromotionService {
         return savedPromotion;
     }
 
-    // 🔹 GET promotion by ID
+    // Get promotion by ID
     public Optional<Promotion> getPromotionById(int id) {
         return promotionRepository.findById(id);
     }
 
-    // 🔹 UPDATE an existing promotion
+    // Update existing promotion
     public Promotion updatePromotion(int id, Map<String, Object> updates) {
         Optional<Promotion> existingPromotionOpt = promotionRepository.findById(id);
         if (existingPromotionOpt.isEmpty()) {
@@ -80,7 +82,7 @@ public class PromotionService {
             }
             promotion.setDiscountPercentage(discountPercentage);
         }
-        if (updates.containsKey("expiration_date")) {
+        if (updates.containsKey("expiration_date")) { 
             String dateStr = updates.get("expiration_date").toString();
             if (dateStr != null && !dateStr.isEmpty()) {
                 promotion.setExpirationDate(Date.valueOf(dateStr)); // Use java.sql.Date consistently
@@ -92,7 +94,7 @@ public class PromotionService {
         return promotionRepository.save(promotion);
     }
 
-    // 🔹 DELETE promotion by ID
+    // Delete promotion by ID
     public boolean deletePromotionById(int id) {
         if (promotionRepository.existsById(id)) {
             promotionRepository.deleteById(id);

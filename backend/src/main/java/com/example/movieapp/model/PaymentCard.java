@@ -28,7 +28,6 @@ public class PaymentCard {
     @Column(name = "expiration_date", nullable = false)
     private LocalDate expirationDate;
 
-    @JsonIgnore // Prevent CVV from being exposed in API responses
     @Column(name = "encrypted_cvv", length = 100, nullable = false)
     private String encryptedCvv;
 
@@ -36,41 +35,34 @@ public class PaymentCard {
     @JoinColumn(name = "billing_address_id", referencedColumnName = "address_id", nullable = false)
     private Address billingAddress;
 
-    @Transient // Not stored in DB, but available in object
+    @Transient
     private String decryptedCardNumber;
 
-    @Transient // Not stored in DB, but available in object
+    @Transient
     private String decryptedCvv;
 
-    // ✅ No-Args Constructor for JPA
     public PaymentCard() {}
 
-    // ✅ Constructor for Fetching from Database (Auto-Decryption)
     @PostLoad
     private void decryptFields() {
         this.decryptedCardNumber = (encryptedCardNumber != null) ? EncryptionUtil.decrypt(encryptedCardNumber) : null;
         this.decryptedCvv = (encryptedCvv != null) ? EncryptionUtil.decrypt(encryptedCvv) : null;
     }
 
-    // ✅ Constructor for Creating a New Card from API Request (Auto-Encryption)
     public PaymentCard(Customer customer, String cardNumber, LocalDate expirationDate, String cvv, Address billingAddress) {
         this.customer = customer;
         this.expirationDate = expirationDate;
         this.billingAddress = billingAddress;
 
-        // Set last four digits
         this.lastFourDigits = cardNumber.substring(cardNumber.length() - 4);
 
-        // Store decrypted values (for object reference)
         this.decryptedCardNumber = cardNumber;
         this.decryptedCvv = cvv;
 
-        // Encrypt and store in DB
         this.encryptedCardNumber = EncryptionUtil.encrypt(cardNumber);
         this.encryptedCvv = EncryptionUtil.encrypt(cvv);
     }
 
-    // ✅ Getters & Setters
     public int getCardId() {
         return cardId;
     }

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Ensures AUTO_INCREMENT on Primary Key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewId;
 
     @Column( nullable = false)
@@ -31,7 +31,6 @@ public class Review {
         this.comment = comment;
     }
 
-    // Getters and Setters
     public int getReviewId() {
         return reviewId;
     }

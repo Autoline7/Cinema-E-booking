@@ -24,7 +24,7 @@ public class MovieService {
         this.reviewRepository = reviewRepository;
     }
 
-    // ✅ Search movies using multiple filters
+    // Search movies using multiple filters
     public List<Movie> searchMovies(Integer id, String title, String genre, String cast,
                                     String director, String producer, String mpaaRating) {
         MPAARating mpaaEnum = null;
@@ -43,7 +43,7 @@ public class MovieService {
         return movies;
     }
 
-     // Fetch all movies and assign reviews
+    // Fetch all movies and assign reviews
     public List<Movie> getAllMovies() {
         List<Movie> movies = movieRepository.findAll();
         movies.forEach(this::assignReviewsToMovie);
@@ -110,12 +110,12 @@ public class MovieService {
         movie.setReviews(reviews);
     }
 
-    // ✅ Add a new movie
+    // Add a new movie
     public Movie addMovie(Movie movie) {
         return movieRepository.save(movie);
     }
 
-    // ✅ Update a movie (Fix: Null-safe field updates)
+    // Update a movie 
     public Movie updateMovie(int id, Movie updatedMovie) {
         return movieRepository.findById(id).map(movie -> {
             if (updatedMovie.getTitle() != null) movie.setTitle(updatedMovie.getTitle());
@@ -131,7 +131,7 @@ public class MovieService {
         }).orElse(null);
     }
 
-    // ✅ Delete a movie
+    // Delete a movie
     public boolean deleteMovie(int movieId) {
         if (movieRepository.existsById(movieId)) {
             movieRepository.deleteById(movieId);
@@ -140,18 +140,18 @@ public class MovieService {
         return false;
     }
 
-    // ✅ Get all reviews for a movie by ID
+    // Get all reviews for a movie by ID
     public List<Review> getReviewsForMovieById(int movieId) {
         return reviewRepository.findByMovieId(movieId);
     }
 
-    // ✅ Get all reviews for a movie by Title (Fix: Optimized query)
+    // Get all reviews for a movie by title
     public List<Review> getReviewsForMovieByTitle(String title) {
         Optional<Movie> movie = movieRepository.findFirstByTitleContainingIgnoreCase(title);
         return movie.map(value -> reviewRepository.findByMovieId(value.getId())).orElseGet(List::of);
     }
 
-    // ✅ Get all distinct producers
+    // Get all distinct producers
     public List<String> getAllProducers() {
         return movieRepository.findAll().stream()
                 .map(Movie::getProducer)
