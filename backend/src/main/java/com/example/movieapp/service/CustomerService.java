@@ -28,7 +28,7 @@ public class CustomerService {
 
     @Autowired
     private PaymentCardService paymentCardService;
-    @Autowired
+    @Autowired 
     private EmailService emailService;
     @Autowired
     private CustomerRepository customerRepository;
@@ -44,15 +44,15 @@ public class CustomerService {
     public Customer createCustomer(Customer customer) {
         // Validate required fields
         if (customer.getFirstName() == null || customer.getFirstName().trim().isEmpty() ||
-                customer.getLastName() == null || customer.getLastName().trim().isEmpty() ||
-                customer.getEmail() == null || customer.getEmail().trim().isEmpty() ||
-                customer.getDecryptedPassword() == null || customer.getDecryptedPassword().trim().isEmpty()) {
+            customer.getLastName() == null || customer.getLastName().trim().isEmpty() ||
+            customer.getEmail() == null || customer.getEmail().trim().isEmpty() ||
+            customer.getDecryptedPassword() == null || customer.getDecryptedPassword().trim().isEmpty()) {
             throw new RuntimeException("Creating a customer requires first name, last name, email, and password.");
         }
 
         // Check if email exists as an admin or customer
         if (customerRepository.findByEmail(customer.getEmail()).isPresent() ||
-                adminRepository.findByEmail(customer.getEmail()).isPresent()) {
+            adminRepository.findByEmail(customer.getEmail()).isPresent()) {
             throw new RuntimeException("A user with this email already exists.");
         }
 
@@ -61,7 +61,7 @@ public class CustomerService {
 
         // Set default status
         if (customer.getStatus() == null) {
-            customer.setStatus(Status.ACTIVE); // Replace with appropriate default
+        customer.setStatus(Status.ACTIVE); // Replace with appropriate default
         }
 
         // Encrypt password
@@ -72,11 +72,11 @@ public class CustomerService {
         // Add address
         if (customer.getAddress() != null) {
             Optional<Address> existingAddress = addressRepository.findByStreetAndCityAndStateAndZipCodeAndCountry(
-                    customer.getAddress().getStreet(),
-                    customer.getAddress().getCity(),
-                    customer.getAddress().getState(),
-                    customer.getAddress().getZipCode(),
-                    customer.getAddress().getCountry()
+                customer.getAddress().getStreet(),
+                customer.getAddress().getCity(),
+                customer.getAddress().getState(),
+                customer.getAddress().getZipCode(),
+                customer.getAddress().getCountry()
             );
 
             if (existingAddress.isPresent()) {
@@ -116,7 +116,7 @@ public class CustomerService {
     @Transactional(readOnly = true)
     public List<Customer> getAllCustomers() {
         List<Customer> customers = customerRepository.findAll();
-
+        
         // Ensure payment cards are loaded
         for (Customer customer : customers) {
             customer.getPaymentCards().size();
@@ -129,7 +129,7 @@ public class CustomerService {
     public Customer getCustomerByEmail(String email) {
         Customer customer = customerRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Customer with email " + email + " not found"));
-
+        
         customer.setDecryptedPassword(customer.getDecryptedPassword());
         return customer;
     }
@@ -143,7 +143,7 @@ public class CustomerService {
     public Customer getCustomerById(int id) {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Customer with ID " + id + " not found."));
-
+        
         customer.setDecryptedPassword(customer.getDecryptedPassword());
         return customer;
     }
@@ -160,7 +160,7 @@ public class CustomerService {
         if (updatedCustomer.getLastName() != null && !updatedCustomer.getLastName().trim().isEmpty()) {
             customer.setLastName(updatedCustomer.getLastName());
         }
-
+        
         if (updatedCustomer.getStatus() != null) {
             customer.setStatus(updatedCustomer.getStatus());
         }
@@ -180,11 +180,11 @@ public class CustomerService {
         // Handle address update
         if (updatedCustomer.getAddress() != null) {
             Optional<Address> existingAddress = addressRepository.findByStreetAndCityAndStateAndZipCodeAndCountry(
-                    updatedCustomer.getAddress().getStreet(),
-                    updatedCustomer.getAddress().getCity(),
-                    updatedCustomer.getAddress().getState(),
-                    updatedCustomer.getAddress().getZipCode(),
-                    updatedCustomer.getAddress().getCountry()
+                updatedCustomer.getAddress().getStreet(),
+                updatedCustomer.getAddress().getCity(),
+                updatedCustomer.getAddress().getState(),
+                updatedCustomer.getAddress().getZipCode(),
+                updatedCustomer.getAddress().getCountry()
             );
 
             if (existingAddress.isPresent()) {
@@ -205,7 +205,7 @@ public class CustomerService {
             // Most likely caused by invalid email
             throw new RuntimeException("Profile updated, but unable to send confirmation email.");
         }
-
+        
         return savedCustomer;
     }
 
@@ -228,13 +228,13 @@ public class CustomerService {
 
     // Save customer in table (updated not new)
     public void saveCustomer(Customer customer) {
-        customerRepository.save(customer);
+    customerRepository.save(customer);
     }
 
     // Customer change password
     public void changePassword(String email, String oldPassword, String newPassword) {
         Customer customer = customerRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+            .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // Verify old password
         if (!EncryptionUtil.verifyPassword(oldPassword, customer.getPasswordHash())) {
@@ -255,3 +255,4 @@ public class CustomerService {
     }
 
 }
+

@@ -75,7 +75,10 @@ backend/
 │   ├── main/
 │   │   ├── java/com/example/movieapp/
 │   │   │   ├── controller/      (Handles API requests)
-│   │   │   │   ├── MovieController.java  
+│   │   │   │   ├── MovieController.java
+│   │   │   │   ├── ScreeningController.java
+│   │   │   │   ├── SeatController.java
+│   │   │   │   ├── ShowroomController.java 
 │   │   │   │   ├── ReviewController.java  
 │   │   │   │   ├── AddressController.java  
 │   │   │   │   ├── PaymentCardController.java  
@@ -83,7 +86,10 @@ backend/
 │   │   │   │   ├── AdminController.java  
 │   │   │   │   ├── PromotionController.java  ✅ (Handles promotion API requests)
 │   │   │   ├── service/         (Contains business logic)
-│   │   │   │   ├── MovieService.java  
+│   │   │   │   ├── MovieService.java
+│   │   │   │   ├── ScreeningService.java
+│   │   │   │   ├── SeatService.java
+│   │   │   │   ├── ShowroomService.java  
 │   │   │   │   ├── ReviewService.java  
 │   │   │   │   ├── AddressService.java  
 │   │   │   │   ├── PaymentCardService.java  
@@ -92,7 +98,10 @@ backend/
 │   │   │   │   ├── PromotionService.java  ✅ (Handles promotion logic)
 │   │   │   │   ├── EmailService.java  ✅ (Handles email sending)
 │   │   │   ├── repository/      (Handles database queries)
-│   │   │   │   ├── MovieRepository.java  
+│   │   │   │   ├── MovieRepository.java 
+│   │   │   │   ├── ScreeningRepository.java
+│   │   │   │   ├── SeatRepository.java
+│   │   │   │   ├── ShowroomRepository.java 
 │   │   │   │   ├── ReviewRepository.java  
 │   │   │   │   ├── AddressRepository.java  
 │   │   │   │   ├── PaymentCardRepository.java  
@@ -100,7 +109,10 @@ backend/
 │   │   │   │   ├── AdminRepository.java  
 │   │   │   │   ├── PromotionRepository.java ✅ (Handles promotion queries)
 │   │   │   ├── model/           (Defines entity models)
-│   │   │   │   ├── Movie.java  
+│   │   │   │   ├── Movie.java 
+│   │   │   │   ├── Screening.java
+│   │   │   │   ├── Seat.java
+│   │   │   │   ├── Showroom.java 
 │   │   │   │   ├── Review.java  
 │   │   │   │   ├── Address.java  
 │   │   │   │   ├── MPAARating.java  (Enum for ratings)
@@ -132,6 +144,9 @@ backend/
 |------------|-------------------------------|------------------------------------------|
 | Main       | MovieappApplication.java      | Starts the application                   |
 | Controller | MovieController.java          | Handles API requests for movies          |
+| Controller | ScreeningController.java      | Handles API requests for screenings      |
+| Controller | SeatController.java           | Handles API requests for seats           |
+| Controller | ShowroomController.java       | Handles API requests for showrooms       |
 | Controller | ReviewController.java         | Handles API requests for reviews         |
 | Controller | AddressController.java        | Handles API requests for addresses       |
 | Controller | PaymentCardController.java    | Handles API requests for payment cards   |
@@ -139,6 +154,9 @@ backend/
 | Controller | AdminController.java          | Handles API requests for admins          |
 | Controller | PromotionController.java      | Handles API requests for promotions      |
 | Service    | MovieService.java             | Business logic for movies                |
+| Service    | ScreeningService.java         | Business logic for screenings            |
+| Service    | SeatService.java              | Business logic for seats                 |
+| Service    | ShowroomService.java          | Business logic for showrooms             |
 | Service    | ReviewService.java            | Business logic for reviews               |
 | Service    | AddressService.java           | Business logic for addresses             |
 | Service    | PaymentCardService.java       | Business logic for payment cards         |
@@ -147,6 +165,9 @@ backend/
 | Service    | PromotionService.java         | Business logic for promotions            |
 | Service    | EmailService.java             | Handles sending emails (verification, promotions, password reset, etc.) |
 | Repository | MovieRepository.java          | Database access for movies               |
+| Repository | ScreeningRepository.java      | Database access for screening            |
+| Repository | SeatRepository.java           | Database access for seats                |
+| Repository | ShowroomRepository.java       | Database access for showrooms            |
 | Repository | ReviewRepository.java         | Database access for reviews              |
 | Repository | AddressRepository.java        | Database access for addresses            |
 | Repository | PaymentCardRepository.java    | Database access for payment cards        |
@@ -154,6 +175,9 @@ backend/
 | Repository | AdminRepository.java          | Database access for admins               |
 | Repository | PromotionRepository.java      | Database access for promotions           |
 | Model      | Movie.java                    | Defines `Movie` object                   |
+| Model      | Screening.java                | Defines `Screening` object               |
+| Model      | Seat.java                     | Defines `Seat` object                    |
+| Model      | Showroom.java                 | Defines `Showroom` object                |
 | Model      | Review.java                   | Defines `Review` object                  |
 | Model      | Address.java                  | Defines `Address` object                 |
 | Model      | MPAARating.java               | Enum for MPAA ratings                    |
@@ -329,6 +353,48 @@ Expiration date should also maintain this "YYYY-MM-DD" format as to not introduc
 in the backend. Please keep them to four-character strings of upper case letters and numbers for consistency. As well, this will send an email to every user subscribed to promotional emails.
 Please keep in mind that this is hooked up to my email for right now lol. Gmail\'s free SMTP sends limit us to 500 emails a day, which should be more than enough. I am considering
 creating a free gmail account for our project that way it doesn\'t come from jacobcromer@gmail.com and something like CinemaEBookingSystem@gmail.com or something like that.
+
+### Showroom Endpoints
+| Method | Endpoint                  | Description                 | Request Body (if needed)   |
+|--------|---------------------------|-----------------------------|----------------------------|
+| GET    | /api/showrooms            | Get all showrooms           | None                       |
+| GET    | /api/showrooms/{id}       | Get showroom by ID          | None                       |
+| POST   | /api/showrooms            | Create a new showroom       | { "seatCapacity": 30 }     |
+| DELETE | /api/showrooms/{id}       | Delete showroom by ID       | None                       |
+
+Honestly, you should not ever need to use these. They exist just in case, but shouldn\'t be necessary.
+
+### Seat Endpoints
+| Method | Endpoint                            | Description                   | Request Body (if needed)                      |
+|--------|-------------------------------------|-------------------------------|-----------------------------------------------|
+| GET    | /api/seats                          | Get all seats                 | None                                          |
+| GET    | /api/seats/{id}                     | Get seat by ID                | None                                          |
+| GET    | /api/seats/showroom/{showroomId}    | Get all seats for a showroom  | None                                          |
+| POST   | /api/seats/showroom/{showroomId}    | Add a seat to a showroom      | { "seatNumber": "1-1", "rowNumber": 1,        |
+|        |                                     |                               |   "columnNumber": 1 }                         |
+| DELETE | /api/seats/{id}                     | Delete seat by ID             | None                                          |
+
+Again, these seat endpoints exist for convenience, but should not be used. No part of the project depends on our ability to create new theaters
+or add or remove seats from them, etc. It can be done, but there is no logic to enforce constraints of seat number to seat capacity, etc. Just don\t, lol.
+
+### Screening Endpoints
+| Method | Endpoint                                               | Description                                                 | Request Body (if needed)                                |
+|--------|--------------------------------------------------------|-------------------------------------------------------------+---------------------------------------------------------|
+| GET    | /api/screenings                                        | Get all screenings                                          | None                                                    |
+| GET    | /api/screenings/{id}                                   | Get screening by ID                                         | None                                                    |
+| GET    | /api/screenings/movie/id/{movieId}                     | Get all screenings for a movie by ID                        | None                                                    |
+| GET    | /api/screenings/movie/title/{title}                    | Get all screenings for a movie by title (case-insensitive)  | None                                                    |
+| GET    | /api/screenings/date/{yyyy-MM-dd}                      | Get all screenings for a specific date                      | None                                                    |
+| GET    | /api/screenings/available/{yyyy-MM-dd}                 | Get available showtimes per showroom (with booked movies)   | None                                                    |
+| POST   | /api/screenings/movie/{movieId}/showroom/{showroomId}  | Create a screening                                          | { "showtime": "2025-04-05T18:30:00" }                   |
+| DELETE | /api/screenings/{id}                                   | Delete a screening by ID                                    | None                                                    |
+
+Okay, above you can get all the screenings, get a specific screening, get all screenings for a movie by movie ID and title, and get all screenings for a specific date.
+Getting available showtimes is really nice as it shows what times are available on a specific date for each showroom, and it also shows you what movies are already booked at what time in
+each showroom. This is what you can use to help you choose times that you can schedule a movie at a certain date.
+
+The endpoints do not allow any overlap in showtime and showroom, which means no two movies can be played at the same place at the same time. You can also delete screenings as well.
+
 
 ---
 

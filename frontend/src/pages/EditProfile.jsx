@@ -44,6 +44,20 @@ const EditProfile = () => {
       await axios.put(`http://localhost:8080/api/customers/${customerId}`, updatedData);
       alert("Profile updated successfully!");
 
+      if(showPayment){
+        try {
+          const changePassResponse = await axios.post(
+            `http://localhost:8080/api/customers/change-password`,
+            paymentCards
+          );
+          alert("Password updated successfully!");
+        } catch (error) {
+          console.error("Error changing password:", error.response?.data || error.message);
+          alert(`Failed to change password: ${error.response?.data?.message || "Unknown error"}`);
+          return;
+        }
+      }
+
       if (showPassword) {
         if (!password || !currentPassword) {
           alert("Please enter both your current and new password.");
