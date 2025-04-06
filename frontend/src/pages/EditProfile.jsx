@@ -46,13 +46,16 @@ const EditProfile = () => {
 
       if(showPayment){
         try {
-          const changePassResponse = await axios.post(
-            `http://localhost:8080/api/customers/change-password`,
-            paymentCards
-          );
-          alert("Password updated successfully!");
+          const customerId = customer.userId;
+          console.log(paymentCards);
+          for (const paymentCard of paymentCards) {
+            const changePassResponse = await axios.post(
+              `http://localhost:8080/api/payment-cards/customer/${customerId}/new-address`,
+              paymentCard
+            );}
+          alert("Payment Cards updated successfully!");
         } catch (error) {
-          console.error("Error changing password:", error.response?.data || error.message);
+          console.error("Error updating payment card:", error.response?.data || error.message);
           alert(`Failed to change password: ${error.response?.data?.message || "Unknown error"}`);
           return;
         }

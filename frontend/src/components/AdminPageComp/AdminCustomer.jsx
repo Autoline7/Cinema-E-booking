@@ -2,6 +2,8 @@ import { useState } from "react"
 import ViewPopup from "../ViewPopup";
 import axios from "axios";
 import SimpleAlert from "../SimpleAlert";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 const AdminCustomer = ({customer}) => {
 
@@ -34,14 +36,33 @@ const AdminCustomer = ({customer}) => {
     setTimeout(() => setShowAlert(false), 3000);
 };
 
-  const handleDelete = ()=>{
-    deletecustomer(customer.userId);
-    handleAlert();
-    setTimeout(() => {
-      window.location.reload();
-    }, 3000);
-   
-  }
+  const handleDelete = () => {
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure you want to delete?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {
+            deletecustomer(customer.userId);
+            handleAlert();
+            setTimeout(() => {
+              window.location.reload();
+            }, 3000);
+            console.log('Deleted');
+          }
+        },
+        {
+          label: 'No',
+          onClick: () => {
+            // Cancel delete operation
+            console.log('Deletion cancelled');
+          }
+        }
+      ]
+    });
+  };
+  
 
 
   
