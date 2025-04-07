@@ -9,7 +9,6 @@ const AddMovieForm = () => {
     const [datesWithShowtimes, setDatesWithShowtimes] = useState({});
     const [showShowTimes, setShowShowTimes] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
-    const [screeningsData, setScreeningsData] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
     const mpaaOptions = ["G", "PG", "PG13", "NC17", "R"];
     const [formData, setFormData] = useState({
@@ -70,9 +69,7 @@ const AddMovieForm = () => {
             // First create the movie
             const movieData = await createMovie(filteredData);
             const movieId = movieData.id;
-            
-            console.log("Movie created with ID:", movieId);
-            
+          
             // Then create the screenings only if movie was created successfully
             if (movieId && showtimesData.length > 0) {
                 await createScreenings(showtimesData, movieId); // Pass movieId directly
@@ -108,10 +105,8 @@ const AddMovieForm = () => {
     async function createMovie(filteredData) {
         try {
             const response = await axios.post("http://localhost:8080/api/movies", filteredData);
-            console.log("Movie created:", response.data);
             return response.data; // Return the entire movie data
         } catch (error) {
-            console.error("Error creating movie:", error);
             throw error;
         }
     }
@@ -135,8 +130,6 @@ const AddMovieForm = () => {
                 const payload = {
                     showtime: formattedTime
                 };
-                
-                console.log(`Creating screening for movie ${movieId}, showroom ${showroomId}, time ${formattedTime}`);
                 await axios.post(
                     `http://localhost:8080/api/screenings/movie/${movieId}/showroom/${showroomId}`, 
                     payload
@@ -190,7 +183,7 @@ const AddMovieForm = () => {
                     />
                 </div>
 
-                {showShowTimes && <ShowtimesInput screeningsData={screeningsData} setScreeningsData={setScreeningsData} selectedDate={selectedDate} setSelectedDate={setSelectedDate} datesWithShowtimes={datesWithShowtimes} setDatesWithShowtimes={setDatesWithShowtimes}/>}
+                {showShowTimes && <ShowtimesInput selectedDate={selectedDate} setSelectedDate={setSelectedDate} datesWithShowtimes={datesWithShowtimes} setDatesWithShowtimes={setDatesWithShowtimes}/>}
 
                 <div className='admin__add__movie__form__button__container'>
                     <button className='admin__add__movie__form__button' type="submit">Create Movie</button>

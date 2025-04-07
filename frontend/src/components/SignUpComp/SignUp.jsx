@@ -54,13 +54,10 @@ const SignUp = () => {
     async function signUp(event) {
         event.preventDefault();
             try {
-                // Send verification code
-                console.log(isAdmin)
                 if(isAdmin){
                     const filteredData = JSON.stringify(formCustomer, (key, value) => 
                         key === "address" || key === "isSubscriber" || key === "role" | key === "status" ? undefined : value
                     );
-                    console.log("Data being sent for admin:", JSON.parse(filteredData));
                     await axios.post("http://localhost:8080/api/admins", JSON.parse(filteredData));
                     handleAlert();
 
@@ -70,7 +67,6 @@ const SignUp = () => {
                     
                 } else{
                     const response = await axios.post("http://localhost:8080/api/customers/send-verification", { email });
-                    console.log("Verification response:", response.data);
                     setShowPopup(true);
                 }
                 
@@ -84,11 +80,9 @@ const SignUp = () => {
         try {
             // Verify the code
             const verifyResponse = await axios.post("http://localhost:8080/api/customers/verify", { email, code: verificationCode });
-            console.log("Verification status:", verifyResponse.data);
 
 
             // Create the customer
-            console.log("Data being sent:", formCustomer);
             await axios.post("http://localhost:8080/api/customers", formCustomer);
 
             // Hide popup and show success alert

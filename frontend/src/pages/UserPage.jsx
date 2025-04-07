@@ -17,7 +17,6 @@ const UserPage = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
         setUserData(customer);
-        console.log(customer)
         setUserName(customer.firstName)
         
     };
@@ -43,7 +42,6 @@ const UserPage = () => {
   async function handleSignOut() {
     try {
       await axios.post("http://localhost:8080/api/customers/logout", {email :userData.email});
-      console.log("User signed out successfully");
       localStorage.removeItem("customer");
       navigate("/Log-In");
     } catch (error) {

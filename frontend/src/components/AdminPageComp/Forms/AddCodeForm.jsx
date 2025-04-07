@@ -32,12 +32,10 @@ const AddCodeForm = () => {
     event.preventDefault();
 
     try {
-      console.log("Data being sent:", formData);
       const response = await axios.post(
         "http://localhost:8080/api/promotions",
         formData
       );
-      console.log("Promo Code created successfully:", response.data);
 
       handleAlert();
       setTimeout(() => window.location.reload(), 3000);

@@ -156,6 +156,19 @@
     border: none;
     cursor: pointer;
 }
+.admin__movie__schedule__button{
+    width: 120px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    margin: 12px 12px;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: var(--text--color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
 
 
 .admin__movie__info, .admin__customer__info, .admin__code__info{

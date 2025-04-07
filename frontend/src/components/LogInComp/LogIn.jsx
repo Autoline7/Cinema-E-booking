@@ -13,8 +13,6 @@ const LogIn = () => {
     e.preventDefault();
 
     try {
-      console.log("Trying Login...");
-
       // Attempt to log in as a customer
       const logResponse = await axios.post("http://localhost:8080/api/customers/login", {
         email,
@@ -25,21 +23,15 @@ const LogIn = () => {
       
       if(role === "ADMIN"){
         const response = await axios.get(`http://localhost:8080/api/admins/email/${email}`);
-        console.log(response);
         localStorage.setItem("admin", JSON.stringify(response.data));
-        console.log("Login successful");
         navigate("/Admin-DashBoard");
 
       } else if(role === "CUSTOMER"){
         const response = await axios.get(`http://localhost:8080/api/customers/email/${email}`);
-        console.log(response);
         localStorage.setItem("customer", JSON.stringify(response.data));
-        console.log("Login successful");
         navigate("/User-Dashboard");
       }
-      return;
     } catch (e) {
-      console.log("Login failed.");
       alert("Invalid Email or Password. Please try again.");
     }
   }

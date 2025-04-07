@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import AdminMovie from './AdminMovie'
 import AddMovieForm from './Forms/AddMovieForm'
 import axios from "axios";
-const AdminMovies = ({addMovieForm}) => {
+import ScheduleAMovieForm from './Forms/ScheduleAMovieForm';
+const AdminMovies = ({addMovieForm, scheduleMovieForm}) => {
   const [movies, setMovies] = useState([]);
 
   async function fetchMovies() {
@@ -20,6 +21,7 @@ const AdminMovies = ({addMovieForm}) => {
               {movies.length > 0 && movies.map((movie, index) => <AdminMovie movie={movie} key={index} /> )}     
         </div>
         {addMovieForm && <AddMovieForm />}
+        {scheduleMovieForm && <ScheduleAMovieForm />}
     </div>
 
   )

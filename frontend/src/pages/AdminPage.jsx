@@ -35,7 +35,6 @@ const AdminPage = () => {
 
     try {
       await axios.post("http://localhost:8080/api/admins/logout", {email :userData.email});
-      console.log("User signed out successfully");
       localStorage.removeItem("admin");
       navigate("/Log-In");
     } catch (error) {
@@ -48,6 +47,7 @@ const AdminPage = () => {
   const [addCustomerForm, setCustomerForm] = useState(false);
   const [addAdminForm, setAdminForm] = useState(false);
   const [addCodeForm, setCodeForm] = useState(false);
+  const [scheduleMovieForm, setScheduleMovieForm] = useState(false);
 
 
   return (
@@ -55,10 +55,10 @@ const AdminPage = () => {
         <Sidebar logout={logout} />
         <div className="admin__container">
           <Header loading={loading} userData={userData} />
-          <AdminNav setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm} setAdminForm={setAdminForm} addAdminForm={addAdminForm} setAddCodeForm={setCodeForm} addCodeForm={addCodeForm}/>
+          <AdminNav scheduleMovieForm={scheduleMovieForm} setScheduleMovieForm={setScheduleMovieForm} setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm} setAdminForm={setAdminForm} addAdminForm={addAdminForm} setAddCodeForm={setCodeForm} addCodeForm={addCodeForm}/>
           <hr />
           <Routes>
-            <Route index element={<AdminMovies addMovieForm={addMovieForm}/>} />
+            <Route index element={<AdminMovies addMovieForm={addMovieForm} scheduleMovieForm={scheduleMovieForm}/>} />
             <Route path="Manage-Users" element={<AdminUsers addCustomerForm={addCustomerForm} addAdminForm={addAdminForm}/>} />
             <Route path="Manage-PromoCodes" element={<AdminCodes addCodeForm={addCodeForm} />} />
           </Routes>

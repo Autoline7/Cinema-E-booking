@@ -10,13 +10,11 @@ const AdminUsers = ({addCustomerForm, addAdminForm}) => {
 
   async function fetchCustomers() {  
     const {data} = await axios.get("http://localhost:8080/api/customers");
-    console.log(data);
     setCustomers(data);
   }
 
   async function fetchAdmins() {  
     const {data} = await axios.get("http://localhost:8080/api/admins");
-    console.log(data);
     setAdmins(data);
   }
 

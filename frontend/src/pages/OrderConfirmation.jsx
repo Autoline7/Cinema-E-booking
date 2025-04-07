@@ -6,9 +6,6 @@ const OrderConfirmation = () => {
   const navigate = useNavigate();
   const { movieId, selectedTime, selectedSeats, ages } = location.state || {};
 
-  console.log("OrderConfirmation Loaded");
-  console.log("Received Data:", location.state);
-
   return (
     <div className="order-confirmation-container">
       <h1>Order Confirmed!</h1>

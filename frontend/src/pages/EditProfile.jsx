@@ -39,7 +39,6 @@ const EditProfile = () => {
         currentPassword: password ? currentPassword : undefined,
         isSubscriber : isSubscriber,
       };
-      console.log(updatedData);
 
       await axios.put(`http://localhost:8080/api/customers/${customerId}`, updatedData);
       alert("Profile updated successfully!");
@@ -47,7 +46,6 @@ const EditProfile = () => {
       if(showPayment){
         try {
           const customerId = customer.userId;
-          console.log(paymentCards);
           for (const paymentCard of paymentCards) {
             const changePassResponse = await axios.post(
               `http://localhost:8080/api/payment-cards/customer/${customerId}/new-address`,
@@ -72,7 +70,6 @@ const EditProfile = () => {
           oldPassword: currentPassword,
           newPassword: password,
         };
-        console.log(changePass);
         try {
           const changePassResponse = await axios.post(
             `http://localhost:8080/api/customers/change-password`,

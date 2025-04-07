@@ -6,7 +6,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
-const AdminMovie = ({movie}) => {
+const AdminMovie = ({movie, setScheduleMovieForm}) => {
 
   const [viewReviews, setViewReviews] = useState(false);
   const [viewSynopsis, setViewSynopsis] = useState(false);
@@ -47,7 +47,6 @@ const AdminMovie = ({movie}) => {
     const title = movie.title
     const {data} = await axios.get(`http://localhost:8080/api/screenings/movie/title/${title}`);
     setShowTimes(data);
-    console.log(data)
   }
 
   useEffect(() => {
@@ -56,7 +55,6 @@ const AdminMovie = ({movie}) => {
 
   async function deleteMovie(id) {
     await axios.delete(`http://localhost:8080/api/movies/${id}`);
-    console.log("movie deleted")
   }
 
   const handleAlert = () => {
@@ -79,14 +77,11 @@ const AdminMovie = ({movie}) => {
             setTimeout(() => {
               window.location.reload();
             }, 3000);
-            console.log('Deleted');
           }
         },
         {
           label: 'No',
           onClick: () => {
-            // Cancel delete operation
-            console.log('Deletion cancelled');
           }
         }
       ]
@@ -100,7 +95,9 @@ const AdminMovie = ({movie}) => {
     <div className="admin__movie">
       <div className="admin__movie__header">
         <h3 className="admin__movie__title">{movie.title == null ? "N/A" : movie.title}</h3>
-        <button className="admin__movie__edit__button">Edit</button>
+        <div>
+          <button className="admin__movie__edit__button">Edit</button>
+        </div>
       </div>
       <div className="admin__movie__info">
         <table className="admin__movie__info__table">

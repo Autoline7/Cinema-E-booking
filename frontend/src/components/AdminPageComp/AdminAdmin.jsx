@@ -14,7 +14,6 @@ const AdminAdmin = ({admin}) => {
 
   async function deleteAdmin(id) {
     await axios.delete(`http://localhost:8080/api/admins/${id}`);//db
-   console.log("Admin deleted")
   }
 
   const handleAlert = () => {
@@ -36,14 +35,11 @@ const AdminAdmin = ({admin}) => {
             setTimeout(() => {
               window.location.reload();
             }, 3000);
-            console.log('Deleted');
           }
         },
         {
           label: 'No',
           onClick: () => {
-            // Cancel delete operation
-            console.log('Deletion cancelled');
           }
         }
       ]

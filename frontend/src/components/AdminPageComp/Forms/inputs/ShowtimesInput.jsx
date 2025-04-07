@@ -2,9 +2,10 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 
-const ShowtimesInput = ({screeningsData, setScreeningsData, selectedDate, setSelectedDate, datesWithShowtimes, setDatesWithShowtimes}) => {
+const ShowtimesInput = ({selectedDate, setSelectedDate, datesWithShowtimes, setDatesWithShowtimes}) => {
     const [loadingScreenings, setLoadingScreenings] = useState(false);
     const [screeningError, setScreeningError] = useState('');
+    const [screeningsData, setScreeningsData] = useState([]);
 
     const handleDateChange = (event) => {
         const date = event.target.value;
@@ -97,6 +98,7 @@ const ShowtimesInput = ({screeningsData, setScreeningsData, selectedDate, setSel
     }, [selectedDate]);
 
 
+    
   return (
         <>
             <label htmlFor="date">Select Date:</label>

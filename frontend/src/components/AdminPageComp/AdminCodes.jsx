@@ -8,7 +8,6 @@ const AdminCodes = ({addCodeForm}) => {
 
   async function fetchPromoCodes() {
     const {data} = await axios.get("http://localhost:8080/api/promotions");
-    console.log(data)
     setCodes(data);
   }
 

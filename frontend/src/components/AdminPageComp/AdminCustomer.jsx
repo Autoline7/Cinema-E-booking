@@ -28,7 +28,6 @@ const AdminCustomer = ({customer}) => {
 
   async function deletecustomer(id) {
     await axios.delete(`http://localhost:8080/api/customers/${id}`);//db
-   console.log("customer deleted")
   }
 
   const handleAlert = () => {
@@ -49,14 +48,11 @@ const AdminCustomer = ({customer}) => {
             setTimeout(() => {
               window.location.reload();
             }, 3000);
-            console.log('Deleted');
           }
         },
         {
           label: 'No',
           onClick: () => {
-            // Cancel delete operation
-            console.log('Deletion cancelled');
           }
         }
       ]

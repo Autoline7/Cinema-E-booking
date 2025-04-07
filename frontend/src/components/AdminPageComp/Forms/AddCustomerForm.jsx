@@ -48,20 +48,16 @@ const AddCustomerForm = () => {
     event.preventDefault();
 
     try {
-      console.log("Data being sent:", formData);
       const response = await axios.post(
         "http://localhost:8080/api/customers",
         formData
       );
-      console.log("Customer created successfully:", response.data);
-
       const customerResponse = await axios.get(
         `http://localhost:8080/api/customers/email/${formData.email}`
       );
       const customerId = customerResponse.data.userId;
 
       if (formDataPaymentCards.paymentCards.length > 0) {
-        console.log(formDataPaymentCards);
         await Promise.all(
           formDataPaymentCards.paymentCards.map((paymentCard) =>
             axios.post(
