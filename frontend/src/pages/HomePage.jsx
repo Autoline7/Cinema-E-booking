@@ -1,40 +1,53 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
+import axios from "axios";
 
 const HomePage = () => {
-  const [moviesData, setMoviesData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [moviesData, setMoviesData] = useState([]);
+  const [runningMovies, setRunningMovies] = useState([]);
+  const [comingSoonMovies, setComingSoonMovies] = useState([]);
   const navigate = useNavigate();
 
-  const getEmbedUrl = (url) => {
-    if (!url) return "";
-    return url.includes("watch?v=")
-      ? url.replace("watch?v=", "embed/")
-      : url;
-  };
-
   useEffect(() => {
-    const fetchMovies = async () => {
+    const fetchMoviesAndScreenings = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/movies");
-        if (!res.ok) throw new Error("Failed to fetch movies");
-        const data = await res.json();
-        setMoviesData(data);
+        const res = await axios.get("http://localhost:8080/api/movies");
+        const movies = res.data;
+
+        const moviesWithScreenings = await Promise.all(
+          movies.map(async (movie) => {
+            try {
+              const screeningRes = await axios.get(
+                `http://localhost:8080/api/screenings/movie/id/${movie.id}`
+              );
+              return { ...movie, hasScreenings: screeningRes.data.length > 0 };
+            } catch {
+              return { ...movie, hasScreenings: false };
+            }
+          })
+        );
+
+        setMoviesData(moviesWithScreenings);
+        setRunningMovies(moviesWithScreenings.filter((m) => m.hasScreenings));
+        setComingSoonMovies(moviesWithScreenings.filter((m) => !m.hasScreenings));
       } catch (err) {
-        console.error("Error fetching movies:", err);
+        console.error("Error fetching movies or screenings:", err);
       }
     };
 
-    fetchMovies();
+    fetchMoviesAndScreenings();
   }, []);
 
-  const filteredMovies = moviesData.filter((movie) =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const currentlyRunningGenres = ["Drama", "Sci-Fi", "Action"];
-  const comingSoonGenres = ["Fantasy", "Animation"];
+  const filteredMovies = (list) =>
+    list.filter((movie) => {
+      const search = searchTerm.toLowerCase();
+      return (
+        movie.title.toLowerCase().includes(search) ||
+        movie.genre.toLowerCase().includes(search)
+      );
+    });
 
   const renderMovieCard = (movie) => (
     <div key={movie.id} className="movie-card">
@@ -42,44 +55,52 @@ const HomePage = () => {
       <iframe
         width="300"
         height="200"
-        src={getEmbedUrl(movie.video)}
+        src={movie.video}
         title={movie.title}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       ></iframe>
+      <p>
+        <strong>MPAA Rating:</strong> {movie.mpaa}
+      </p>
+      {/* Book button intentionally hidden on Home Page */}
     </div>
   );
 
   return (
     <div className="home-container">
-      <header className="homepage-header">
-        <h1>Welcome to CineWorld</h1>
+      <header className="header">
+        <h1>Welcome to Cinema E-Booking</h1>
         <div className="homepage-buttons">
           <button onClick={() => navigate("/Log-In")}>Log In</button>
-          <button onClick={() => navigate("/Sign-Up")}>Sign Up</button>
         </div>
-        <input
-          type="text"
-          placeholder="Search movies..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-bar"
-        />
       </header>
 
-      <h2 className="homepage-section-title">Currently Running</h2>
+      <input
+        type="text"
+        placeholder="Search movies by title or genre..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-bar"
+      />
+
+      <h2>Currently Running</h2>
       <div className="movies-section">
-        {filteredMovies
-          .filter((movie) => currentlyRunningGenres.includes(movie.genre))
-          .map(renderMovieCard)}
+        {filteredMovies(runningMovies).length > 0 ? (
+          filteredMovies(runningMovies).map(renderMovieCard)
+        ) : (
+          <p>No currently running movies found matching your search.</p>
+        )}
       </div>
 
-      <h2 className="homepage-section-title">Coming Soon</h2>
+      <h2>Coming Soon</h2>
       <div className="movies-section">
-        {filteredMovies
-          .filter((movie) => comingSoonGenres.includes(movie.genre))
-          .map(renderMovieCard)}
+        {filteredMovies(comingSoonMovies).length > 0 ? (
+          filteredMovies(comingSoonMovies).map(renderMovieCard)
+        ) : (
+          <p>No coming soon movies found matching your search.</p>
+        )}
       </div>
     </div>
   );

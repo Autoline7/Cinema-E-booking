@@ -8,74 +8,79 @@ const UserPage = () => {
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const customer = JSON.parse(localStorage.getItem("customer")) || null;
-  const [userData, setUserData] = useState(null);
-  const currentlyRunningGenres = ["Drama", "Sci-Fi", "Action"];
-  const comingSoonGenres = ["Fantasy", "Animation"];
   const [moviesData, setMoviesData] = useState([]);
-
+  const [runningMovies, setRunningMovies] = useState([]);
+  const [comingSoonMovies, setComingSoonMovies] = useState([]);
 
   useEffect(() => {
-    const fetchCustomer = async () => {
-        setUserData(customer);
-        setUserName(customer.firstName)
-        
+    setUserName(customer?.firstName || "");
+  }, [customer]);
+
+  useEffect(() => {
+    const fetchMoviesAndScreenings = async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/api/movies");
+        const movies = res.data;
+
+        const moviesWithScreenings = await Promise.all(
+          movies.map(async (movie) => {
+            try {
+              const screeningRes = await axios.get(
+                `http://localhost:8080/api/screenings/movie/id/${movie.id}`
+              );
+              return { ...movie, hasScreenings: screeningRes.data.length > 0 };
+            } catch {
+              return { ...movie, hasScreenings: false };
+            }
+          })
+        );
+
+        setMoviesData(moviesWithScreenings);
+        setRunningMovies(moviesWithScreenings.filter((m) => m.hasScreenings));
+        setComingSoonMovies(moviesWithScreenings.filter((m) => !m.hasScreenings));
+      } catch (err) {
+        console.error("Error fetching movies or screenings:", err);
+      }
     };
 
-    fetchCustomer();
-  }, [navigate]);
+    fetchMoviesAndScreenings();
+  }, []);
 
-    useEffect(() => {
-      const fetchMovies = async () => {
-        try {
-          const res = await axios.get("http://localhost:8080/api/movies");
-          const data = res.data
-          setMoviesData(data);
-        } catch (err) {
-          console.error("Error fetching movies:", err);
-        }
-      };
-
-      fetchMovies();
-    }, []);
-
-
-  async function handleSignOut() {
+  const handleSignOut = async () => {
     try {
-      await axios.post("http://localhost:8080/api/customers/logout", {email :userData.email});
+      await axios.post("http://localhost:8080/api/customers/logout", { email: customer.email });
       localStorage.removeItem("customer");
       navigate("/Log-In");
     } catch (error) {
-      console.error("Error logging out:", error.response?.data || error.message);
+      console.error("Error logging out:", error);
     }
-  }
-
-  const filteredMovies = moviesData.filter((movie) =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const getEmbedUrl = (url) => {
-    if (!url) return "";
-    return url.includes("watch?v=")
-      ? url.replace("watch?v=", "embed/")
-      : url;
   };
+
+  const filteredMovies = (list) =>
+    list.filter((movie) => {
+      const search = searchTerm.toLowerCase();
+      return (
+        movie.title.toLowerCase().includes(search) ||
+        movie.genre.toLowerCase().includes(search)
+      );
+    });
 
   const renderMovieCard = (movie) => (
     <div key={movie.id} className="movie-card">
       <h3>{movie.title}</h3>
       <iframe
-        width="100%"
-        height="180"
-        src={getEmbedUrl(movie.video)}
+        width="300"
+        height="200"
+        src={movie.video}
         title={movie.title}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       ></iframe>
-      <button
-        className="book-button"
-        onClick={() => navigate(`/Book-Ticket/${movie.id}`)}
-      >
+      <p>
+        <strong>MPAA Rating:</strong> {movie.mpaa}
+      </p>
+      <button className="book-button" onClick={() => navigate(`/Book-Ticket/${movie.id}`)}>
         Book Movie
       </button>
     </div>
@@ -86,18 +91,14 @@ const UserPage = () => {
       <header className="header">
         <h1>Hi, {userName}</h1>
         <div className="user-buttons">
-          <button className="account-button" onClick={() => navigate("/Edit-Profile")}>
-            My Account
-          </button>
-          <button className="signout-button" onClick={handleSignOut}>
-            Sign Out
-          </button>
+          <button className="account-button" onClick={() => navigate("/Edit-Profile")}>My Account</button>
+          <button className="signout-button" onClick={handleSignOut}>Sign Out</button>
         </div>
       </header>
 
       <input
         type="text"
-        placeholder="Search movies..."
+        placeholder="Search movies by title or genre..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-bar"
@@ -105,16 +106,20 @@ const UserPage = () => {
 
       <h2 className="user__h2">Currently Running</h2>
       <div className="movies-section">
-        {filteredMovies
-          .filter((movie) => currentlyRunningGenres.includes(movie.genre))
-          .map(renderMovieCard)}
+        {filteredMovies(runningMovies).length > 0 ? (
+          filteredMovies(runningMovies).map(renderMovieCard)
+        ) : (
+          <p>No currently running movies found matching your search.</p>
+        )}
       </div>
 
       <h2>Coming Soon</h2>
       <div className="movies-section">
-        {filteredMovies
-          .filter((movie) => comingSoonGenres.includes(movie.genre))
-          .map(renderMovieCard)}
+        {filteredMovies(comingSoonMovies).length > 0 ? (
+          filteredMovies(comingSoonMovies).map(renderMovieCard)
+        ) : (
+          <p>No coming soon movies found matching your search.</p>
+        )}
       </div>
     </div>
   );
