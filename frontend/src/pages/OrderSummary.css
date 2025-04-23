@@ -1,0 +1,76 @@
+.order-summary-container {
+    background-color: #141414;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+h1, h2, h3 {
+    color: #e50914;
+}
+
+.ticket-list {
+    margin: 20px auto;
+    max-width: 500px;
+    background: #222;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.ticket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+}
+
+.ticket-item:last-child {
+    border-bottom: none;
+}
+
+.remove-button, .confirm-button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.remove-button {
+    background: #444;
+    color: white;
+}
+
+.remove-button:hover {
+    background: #666;
+}
+
+.confirm-button {
+    background: #e50914;
+    color: white;
+    margin-top: 20px;
+}
+
+.confirm-button:hover {
+    background: #b20710;
+}
+
+.back-button {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-bottom: 20px;
+}
+
+.back-button:hover {
+    background: #666;
+}
