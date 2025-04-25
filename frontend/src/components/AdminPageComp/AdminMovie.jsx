@@ -99,10 +99,10 @@ const AdminMovie = ({movie, editMovieForm, setEditMovieForm}) => {
           <button onClick={() => 
             setEditMovieForm(prevState => ({
               ...prevState,
-              formOpen: prevState.movieId === movie.id ? !prevState.formOpen : true,
-              movieId: movie.id
+              formOpen: prevState.movie.id === movie.id ? !prevState.formOpen : true,
+              movie: movie
             }))}
-             className="admin__movie__edit__button">{editMovieForm.formOpen && editMovieForm.movieId === movie.id ? "Close" : "Edit"}</button>
+             className="admin__movie__edit__button">{editMovieForm.formOpen && editMovieForm.movie.id === movie.id ? "Close" : "Edit"}</button>
         </div>
       </div>
       <div className="admin__movie__info">

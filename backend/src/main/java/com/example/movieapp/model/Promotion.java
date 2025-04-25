@@ -1,6 +1,7 @@
 package com.example.movieapp.model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Transient;
 import java.math.BigDecimal;
 import java.sql.Date;
 

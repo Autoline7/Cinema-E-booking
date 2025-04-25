@@ -23,11 +23,13 @@ public class ScreeningController {
         this.screeningService = screeningService;
     }
 
+    // Get all screenings
     @GetMapping
     public ResponseEntity<List<Screening>> getAllScreenings() {
         return ResponseEntity.ok(screeningService.getAllScreenings());
     }
 
+    // Get a screening by ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getScreeningById(@PathVariable int id) {
         return screeningService.getScreeningById(id)
@@ -35,6 +37,7 @@ public class ScreeningController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Create a screening for a movie in a specific showroom
     @PostMapping("/movie/{movieId}/showroom/{showroomId}")
     public ResponseEntity<?> addScreening(@PathVariable int movieId,
                                           @PathVariable int showroomId,
@@ -46,6 +49,7 @@ public class ScreeningController {
         }
     }
 
+    // Delete a screening by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteScreening(@PathVariable int id) {
         if (screeningService.deleteScreening(id)) {
@@ -55,16 +59,19 @@ public class ScreeningController {
         }
     }
 
+    // Get all screenings for a specific movie by ID
     @GetMapping("/movie/id/{movieId}")
     public ResponseEntity<List<Screening>> getScreeningsByMovieId(@PathVariable int movieId) {
         return ResponseEntity.ok(screeningService.getScreeningsByMovieId(movieId));
     }
 
+    // Get all screenings for a specific movie by title
     @GetMapping("/movie/title/{title}")
     public ResponseEntity<List<Screening>> getScreeningsByMovieTitle(@PathVariable String title) {
         return ResponseEntity.ok(screeningService.getScreeningsByMovieTitle(title));
     }
 
+    // Get all screenings for a specific date
     @GetMapping("/date/{date}")
     public ResponseEntity<List<Screening>> getScreeningsByDate(@PathVariable String date) {
         try {
@@ -75,6 +82,8 @@ public class ScreeningController {
         }
     }
 
+    // Get all available showtimes to schedule on a specific date
+    // Also returns what is already booked
     @GetMapping("/available/{date}")
     public ResponseEntity<List<Map<String, Object>>> getAvailableShowtimes(@PathVariable String date) {
         try {
@@ -84,4 +93,15 @@ public class ScreeningController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    // Get all seats for a specific screening, and whether they are available or not.
+    @GetMapping("/{screeningId}/seats")
+    public ResponseEntity<?> getAvailableSeatsForScreening(@PathVariable int screeningId) {
+        try {
+            return ResponseEntity.ok(screeningService.getSeatAvailabilityForScreening(screeningId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
 }

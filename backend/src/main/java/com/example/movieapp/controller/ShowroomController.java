@@ -18,11 +18,13 @@ public class ShowroomController {
         this.showroomService = showroomService;
     }
 
+    // Get all showrooms
     @GetMapping
     public ResponseEntity<List<Showroom>> getAllShowrooms() {
         return ResponseEntity.ok(showroomService.getAllShowrooms());
     }
 
+    // Get a showroom by ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getShowroomById(@PathVariable int id) {
         return showroomService.getShowroomById(id)
@@ -30,11 +32,13 @@ public class ShowroomController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Create a new showroom
     @PostMapping
     public ResponseEntity<Showroom> createShowroom(@RequestBody Showroom showroom) {
         return ResponseEntity.ok(showroomService.addShowroom(showroom));
     }
 
+    // Delete a showroom
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteShowroom(@PathVariable int id) {
         if (showroomService.deleteShowroom(id)) {

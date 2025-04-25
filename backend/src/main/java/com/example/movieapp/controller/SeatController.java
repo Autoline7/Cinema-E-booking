@@ -18,11 +18,13 @@ public class SeatController {
         this.seatService = seatService;
     }
 
+    // Get all seats
     @GetMapping
     public ResponseEntity<List<Seat>> getAllSeats() {
         return ResponseEntity.ok(seatService.getAllSeats());
     }
 
+    // Get a seat by ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getSeatById(@PathVariable int id) {
         return seatService.getSeatById(id)
@@ -30,11 +32,13 @@ public class SeatController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Get all seats for a specific showroom
     @GetMapping("/showroom/{showroomId}")
     public ResponseEntity<List<Seat>> getSeatsByShowroom(@PathVariable int showroomId) {
         return ResponseEntity.ok(seatService.getSeatsByShowroomId(showroomId));
     }
 
+    // Create a seat in a showroom
     @PostMapping("/showroom/{showroomId}")
     public ResponseEntity<?> addSeat(@PathVariable int showroomId, @RequestBody Seat seat) {
         try {
@@ -44,6 +48,7 @@ public class SeatController {
         }
     }
 
+    // Delete a seat
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSeat(@PathVariable int id) {
         if (seatService.deleteSeat(id)) {

@@ -3,13 +3,16 @@ import axios from "axios";
 import SimpleAlert from "../../SimpleAlert";
 import Selector from '../../Selector';
 import ShowtimesInput from './inputs/ShowtimesInput';
+import ScreeningsList from './lists/ScreeningsList';
 
-const EditMovieForm = ({movieId}) => {
+const EditMovieForm = ({movie}) => {
     const [datesWithShowtimes, setDatesWithShowtimes] = useState({});
     const [showShowTimes, setShowShowTimes] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
     const [showAlert, setShowAlert] = useState(false);
     const mpaaOptions = ["G", "PG", "PG13", "NC17", "R"];
+    const [screeningsFetched, setScreeningsFetched] = useState([]);
+    const [screeningsDeleted, setScreeningsDeleted] = useState([]);
     const [formData, setFormData] = useState({
         title: "",
         genre: "",
@@ -22,6 +25,29 @@ const EditMovieForm = ({movieId}) => {
         video: "",
         mpaa: null,
     });
+
+    useEffect(() => {
+        if (movie) {
+            setFormData({
+                title: movie.title || "",
+                genre: movie.genre || "",
+                cast: movie.cast || "",
+                director: movie.director || "",
+                producer: movie.producer || "",
+                synopsis: movie.synopsis || "",
+                reviews: movie.reviews?.length ? movie.reviews : [{ reviewerName: "", rating: -1, comment: "" }],
+                picture: movie.picture || "",
+                video: movie.video || "",
+                mpaa: movie.mpaa || "",
+            });
+
+            const getScreenings = async () =>{
+                setScreeningsFetched( await fetchScreenings(movie.id));
+            }
+            getScreenings();
+        }
+
+    }, [movie]);
     
     
     const handleAlert = () => {
@@ -66,12 +92,17 @@ const EditMovieForm = ({movieId}) => {
         
         try {
             // First create the movie
-            const movieData = await createMovie(filteredData);
+            const movieData = await updateMovie(filteredData);
             const movieId = movieData.id;
           
             // Then create the screenings only if movie was created successfully
             if (movieId && showtimesData.length > 0) {
                 await createScreenings(showtimesData, movieId); // Pass movieId directly
+            }
+
+            //delete the movies selected
+            if(movieId && screeningsDeleted.length > 0){
+                await deleteScreenings(screeningsDeleted, movieId);
             }
             
             // Reset form
@@ -87,7 +118,9 @@ const EditMovieForm = ({movieId}) => {
                 video: "",
                 mpaa: "",
             });
-        
+            
+            setScreeningsDeleted([])
+            setScreeningsFetched([]);
             setDatesWithShowtimes({});
             setSelectedDate('');
             handleAlert();
@@ -101,9 +134,9 @@ const EditMovieForm = ({movieId}) => {
         }
     };
 
-    async function createMovie(filteredData) {
+    async function updateMovie(filteredData) {
         try {
-            const response = await axios.post("http://localhost:8080/api/movies", filteredData);
+            const response = await axios.put(`http://localhost:8080/api/movies/${movie.id}`, filteredData);
             return response.data; // Return the entire movie data
         } catch (error) {
             throw error;
@@ -140,9 +173,39 @@ const EditMovieForm = ({movieId}) => {
         }
     }
 
+    async function deleteScreenings(showTimesData, id) {
+        try {
+            // Make sure we have a movie ID
+            if (!id) {
+                console.error("No movie ID available");
+                return;
+            }
+            console.log(showTimesData);
+            for (const showTime of showTimesData) {
+                await axios.delete(
+                    `http://localhost:8080/api/screenings/${showTime}`
+                );
+                console.log("screening deleted");
+            }
+        } catch (error) {
+            console.error("Error creating screenings:", error);
+            throw error;
+        }
+    }
+
+    async function fetchScreenings(id) {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/screenings/movie/id/${id}`);
+            console.log(response.data)
+            return response.data; // Return the entire showtime data
+        } catch (error) {
+            throw error;
+        }
+    }
+
     return (
         <div className='admin__movie__form'>
-            <h2 className="admin__add__movie__title">Edit a new Movie {movieId}</h2>
+            <h2 className="admin__add__movie__title">Edit Movie ID {movie.id}</h2>
             <form onSubmit={handleSubmit} className='admin__add__movie__form'>
 
                 <p className="admin__form__required__fields">Note: Required = <span className='red'>*</span></p>
@@ -173,6 +236,8 @@ const EditMovieForm = ({movieId}) => {
                 <label htmlFor="mpaa"><span className='red'>*</span>MPAA:</label>
                 <Selector options={mpaaOptions} selectedValue={formData.mpaa} onChange={(value) => setFormData(prevData => ({ ...prevData, mpaa: value }))} name="mpaa" required={true}/>
                 
+               <ScreeningsList initialScreenings={screeningsFetched} setScreeningsDeleted={setScreeningsDeleted}/>
+
                 <div>
                     <label>Add showtime(s)</label>
                     <input
@@ -182,13 +247,15 @@ const EditMovieForm = ({movieId}) => {
                     />
                 </div>
 
+                
+
                 {showShowTimes && <ShowtimesInput selectedDate={selectedDate} setSelectedDate={setSelectedDate} datesWithShowtimes={datesWithShowtimes} setDatesWithShowtimes={setDatesWithShowtimes}/>}
 
                 <div className='admin__add__movie__form__button__container'>
-                    <button className='admin__add__movie__form__button' type="submit">Create Movie</button>
+                    <button className='admin__add__movie__form__button' type="submit">Update Movie</button>
                 </div>
 
-                {showAlert && <SimpleAlert message="Movie Created Successfully!!!" />}
+                {showAlert && <SimpleAlert message="Movie Updated Successfully!!!" />}
 
             </form>
         </div>

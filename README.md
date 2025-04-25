@@ -84,7 +84,10 @@ backend/
 │   │   │   │   ├── PaymentCardController.java  
 │   │   │   │   ├── CustomerController.java  
 │   │   │   │   ├── AdminController.java  
-│   │   │   │   ├── PromotionController.java  ✅ (Handles promotion API requests)
+│   │   │   │   ├── PromotionController.java       
+│   │   │   │   ├── BookingController.java         
+│   │   │   │   ├── TicketController.java          
+│   │   │   │   ├── TicketPricingController.java   
 │   │   │   ├── service/         (Contains business logic)
 │   │   │   │   ├── MovieService.java
 │   │   │   │   ├── ScreeningService.java
@@ -95,8 +98,11 @@ backend/
 │   │   │   │   ├── PaymentCardService.java  
 │   │   │   │   ├── CustomerService.java  
 │   │   │   │   ├── AdminService.java  
-│   │   │   │   ├── PromotionService.java  ✅ (Handles promotion logic)
-│   │   │   │   ├── EmailService.java  ✅ (Handles email sending)
+│   │   │   │   ├── PromotionService.java          
+│   │   │   │   ├── EmailService.java              
+│   │   │   │   ├── BookingService.java            
+│   │   │   │   ├── TicketService.java             
+│   │   │   │   ├── TicketPricingService.java      
 │   │   │   ├── repository/      (Handles database queries)
 │   │   │   │   ├── MovieRepository.java 
 │   │   │   │   ├── ScreeningRepository.java
@@ -107,7 +113,10 @@ backend/
 │   │   │   │   ├── PaymentCardRepository.java  
 │   │   │   │   ├── CustomerRepository.java  
 │   │   │   │   ├── AdminRepository.java  
-│   │   │   │   ├── PromotionRepository.java ✅ (Handles promotion queries)
+│   │   │   │   ├── PromotionRepository.java       
+│   │   │   │   ├── BookingRepository.java         
+│   │   │   │   ├── TicketRepository.java          
+│   │   │   │   ├── TicketPriceRepository.java     
 │   │   │   ├── model/           (Defines entity models)
 │   │   │   │   ├── Movie.java 
 │   │   │   │   ├── Screening.java
@@ -115,19 +124,23 @@ backend/
 │   │   │   │   ├── Showroom.java 
 │   │   │   │   ├── Review.java  
 │   │   │   │   ├── Address.java  
-│   │   │   │   ├── MPAARating.java  (Enum for ratings)
+│   │   │   │   ├── MPAARating.java                (Enum for ratings)
 │   │   │   │   ├── PaymentCard.java  
 │   │   │   │   ├── Customer.java  
 │   │   │   │   ├── User.java  
 │   │   │   │   ├── Admin.java  
-│   │   │   │   ├── Status.java  (Enum for customer status)
-│   │   │   │   ├── Role.java  (Enum for user roles)
-│   │   │   │   ├── Promotion.java  ✅ (Defines promotions)
+│   │   │   │   ├── Status.java                    (Enum for customer status)
+│   │   │   │   ├── Role.java                      (Enum for user roles)
+│   │   │   │   ├── Promotion.java                 
+│   │   │   │   ├── Booking.java                   
+│   │   │   │   ├── Ticket.java                    
+│   │   │   │   ├── TicketPrice.java               
+│   │   │   │   ├── TicketType.java                 (Enum for ticket types)
 │   │   │   ├── util/            (Utility classes)
 │   │   │   │   ├── EncryptionUtil.java  
-│   │   │   │   ├── VerificationUtil.java ✅ (Handles verification codes)
-│   │   │   │   ├── VerificationCodeStore.java ✅ (Stores verification codes)
-│   │   │   │   ├── PasswordResetCodeStore.java ✅ (Stores password reset codes)
+│   │   │   │   ├── VerificationUtil.java          
+│   │   │   │   ├── VerificationCodeStore.java     
+│   │   │   │   ├── PasswordResetCodeStore.java    
 │   │   │   ├── MovieappApplication.java    (Main entry point)
 │   ├── resources/
 │   │   ├── application.properties      (Database & Spring settings)
@@ -140,59 +153,98 @@ backend/
 ---
 
 ## Backend Explanation
-| Layer      | File                          | Purpose                                  |
-|------------|-------------------------------|------------------------------------------|
-| Main       | MovieappApplication.java      | Starts the application                   |
-| Controller | MovieController.java          | Handles API requests for movies          |
-| Controller | ScreeningController.java      | Handles API requests for screenings      |
-| Controller | SeatController.java           | Handles API requests for seats           |
-| Controller | ShowroomController.java       | Handles API requests for showrooms       |
-| Controller | ReviewController.java         | Handles API requests for reviews         |
-| Controller | AddressController.java        | Handles API requests for addresses       |
-| Controller | PaymentCardController.java    | Handles API requests for payment cards   |
-| Controller | CustomerController.java       | Handles API requests for customers       |
-| Controller | AdminController.java          | Handles API requests for admins          |
-| Controller | PromotionController.java      | Handles API requests for promotions      |
-| Service    | MovieService.java             | Business logic for movies                |
-| Service    | ScreeningService.java         | Business logic for screenings            |
-| Service    | SeatService.java              | Business logic for seats                 |
-| Service    | ShowroomService.java          | Business logic for showrooms             |
-| Service    | ReviewService.java            | Business logic for reviews               |
-| Service    | AddressService.java           | Business logic for addresses             |
-| Service    | PaymentCardService.java       | Business logic for payment cards         |
-| Service    | CustomerService.java          | Business logic for customers             |
-| Service    | AdminService.java             | Business logic for admins                |
-| Service    | PromotionService.java         | Business logic for promotions            |
-| Service    | EmailService.java             | Handles sending emails (verification, promotions, password reset, etc.) |
-| Repository | MovieRepository.java          | Database access for movies               |
-| Repository | ScreeningRepository.java      | Database access for screening            |
-| Repository | SeatRepository.java           | Database access for seats                |
-| Repository | ShowroomRepository.java       | Database access for showrooms            |
-| Repository | ReviewRepository.java         | Database access for reviews              |
-| Repository | AddressRepository.java        | Database access for addresses            |
-| Repository | PaymentCardRepository.java    | Database access for payment cards        |
-| Repository | CustomerRepository.java       | Database access for customers            |
-| Repository | AdminRepository.java          | Database access for admins               |
-| Repository | PromotionRepository.java      | Database access for promotions           |
-| Model      | Movie.java                    | Defines `Movie` object                   |
-| Model      | Screening.java                | Defines `Screening` object               |
-| Model      | Seat.java                     | Defines `Seat` object                    |
-| Model      | Showroom.java                 | Defines `Showroom` object                |
-| Model      | Review.java                   | Defines `Review` object                  |
-| Model      | Address.java                  | Defines `Address` object                 |
-| Model      | MPAARating.java               | Enum for MPAA ratings                    |
-| Model      | PaymentCard.java              | Defines `PaymentCard` object with encryption logic |
-| Model      | Customer.java                 | Defines `Customer` object                |
-| Model      | Admin.java                    | Defines `Admin` object                   |
-| Model      | Role.java                     | Enum for user roles (Admin, Customer)    |
-| Model      | Status.java                   | Enum for customer statuses               |
-| Model      | Promotion.java                | Defines `Promotion` entity with promo codes, discounts, and expiration dates |
-| Util       | EncryptionUtil.java           | Handles encryption & decryption logic    |
-| Util       | VerificationUtil.java         | Generates verification codes             |
-| Util       | VerificationCodeStore.java    | Stores temporary verification codes      |
-| Util       | PasswordResetCodeStore.java   | Stores temporary password reset codes    |
+| Layer      | File                          | Purpose                                                                      |
+|------------|-------------------------------|------------------------------------------------------------------------------|
+| Main       | MovieappApplication.java      | Starts the application                                                       |
+| Controller | MovieController.java          | Handles API requests for movies                                              |
+| Controller | BookingController.java        | Handles API requests for bookings                                            |
+| Controller | ScreeningController.java      | Handles API requests for screenings                                          |
+| Controller | SeatController.java           | Handles API requests for seats                                               |
+| Controller | ShowroomController.java       | Handles API requests for showrooms                                           |
+| Controller | ReviewController.java         | Handles API requests for reviews                                             |
+| Controller | AddressController.java        | Handles API requests for addresses                                           |
+| Controller | PaymentCardController.java    | Handles API requests for payment cards                                       |
+| Controller | CustomerController.java       | Handles API requests for customers                                           |
+| Controller | AdminController.java          | Handles API requests for admins                                              |
+| Controller | PromotionController.java      | Handles API requests for promotions                                          |
+| Controller | TicketController.java         | Handles API requests for creating and fetching tickets                       |
+| Controller | TicketPricingController.java  | Handles API requests for managing ticket type pricing                        |
+| Service    | MovieService.java             | Business logic for movies                                                    |
+| Service    | BookingService.java           | Business logic for bookings                                                  |
+| Service    | ScreeningService.java         | Business logic for screenings                                                |
+| Service    | SeatService.java              | Business logic for seats                                                     |
+| Service    | ShowroomService.java          | Business logic for showrooms                                                 |
+| Service    | ReviewService.java            | Business logic for reviews                                                   |
+| Service    | AddressService.java           | Business logic for addresses                                                 |
+| Service    | PaymentCardService.java       | Business logic for payment cards                                             |
+| Service    | CustomerService.java          | Business logic for customers                                                 |
+| Service    | AdminService.java             | Business logic for admins                                                    |
+| Service    | PromotionService.java         | Business logic for promotions                                                |
+| Service    | EmailService.java             | Handles sending emails (verification, booking, password reset, etc.)         |
+| Service    | TicketPricingService.java     | Business logic for managing ticket pricing by type                           |
+| Repository | MovieRepository.java          | Database access for movies                                                   |
+| Repository | BookingRepository.java        | Database access for bookings                                                 |
+| Repository | ScreeningRepository.java      | Database access for screenings                                               |
+| Repository | SeatRepository.java           | Database access for seats                                                    |
+| Repository | ShowroomRepository.java       | Database access for showrooms                                                |
+| Repository | ReviewRepository.java         | Database access for reviews                                                  |
+| Repository | AddressRepository.java        | Database access for addresses                                                |
+| Repository | PaymentCardRepository.java    | Database access for payment cards                                            |
+| Repository | CustomerRepository.java       | Database access for customers                                                |
+| Repository | AdminRepository.java          | Database access for admins                                                   |
+| Repository | PromotionRepository.java      | Database access for promotions                                               |
+| Repository | TicketRepository.java         | Database access for tickets                                                  |
+| Repository | TicketPriceRepository.java    | Database access for default prices by ticket type                            |
+| Model      | Movie.java                    | Defines `Movie` entity                                                       |
+| Model      | Booking.java                  | Defines `Booking` entity                                                     |
+| Model      | Screening.java                | Defines `Screening` entity                                                   |
+| Model      | Seat.java                     | Defines `Seat` entity                                                        |
+| Model      | Showroom.java                 | Defines `Showroom` entity                                                    |
+| Model      | Review.java                   | Defines `Review` entity                                                      |
+| Model      | Address.java                  | Defines `Address` entity                                                     |
+| Model      | PaymentCard.java              | Defines `PaymentCard` entity with encryption logic                           |
+| Model      | Customer.java                 | Defines `Customer` entity                                                    |
+| Model      | Admin.java                    | Defines `Admin` entity                                                       |
+| Model      | Promotion.java                | Defines `Promotion` entity with promo codes, discounts, and expiration       |
+| Model      | Ticket.java                   | Defines `Ticket` entity with type, price, and booking association            |
+| Model      | TicketPrice.java              | Defines default price for each `TicketType`                                  |
+| Enum       | MPAARating.java               | Enum for MPAA ratings                                                        |
+| Enum       | Role.java                     | Enum for user roles (Admin, Customer)                                        |
+| Enum       | Status.java                   | Enum for customer statuses                                                   |
+| Enum       | TicketType.java               | Enum for ticket types (Adult, Senior, Child)                                 |
+| Util       | EncryptionUtil.java           | Handles encryption & decryption logic                                        |
+| Util       | VerificationUtil.java         | Generates verification codes                                                 |
+| Util       | VerificationCodeStore.java    | Stores temporary verification codes                                          |
+| Util       | PasswordResetCodeStore.java   | Stores temporary password reset codes                                        |
 
+---
 
+The project follows a layered architecture pattern with clear separation of concerns, heavily influenced by the Model-View-Controller (MVC) style common in Spring Boot web applications. Each major responsibility is encapsulated in its own layer:
+
+Model layer contains the @Entity classes (e.g., Movie, Booking, Ticket) that map to database tables.
+
+Repository layer abstracts and encapsulates the database access using Spring Data JPA.
+
+Service layer implements core business logic (e.g., validating ticket prices, handling bookings, calculating fees).
+
+Controller layer serves as the web API entry point (e.g., REST endpoints for bookings, movies, customers).
+
+Utility classes (like EncryptionUtil or EmailService) act as helper components for cross-cutting concerns.
+
+---
+
+Design Patterns Used:
+MVC (Model-View-Controller): The controller handles HTTP requests and responses, services hold business logic, and models represent the data.
+
+DAO (Data Access Object) via Repository interfaces using Spring Data JPA.
+
+Facade Pattern: The service layer acts as a facade, providing a simplified interface for controllers to interact with complex underlying logic.
+
+Proxy Pattern: Classes like EmailService may act as proxies for sending emails through external SMTP services (e.g., JavaMailSender), shielding the core logic from implementation specifics.
+
+Singleton Pattern: Spring beans (e.g., services, repositories) are singletons by default.
+
+The system is a Spring-powered layered/MVC hybrid architecture, leveraging a modular, scalable, and loosely coupled design using standard enterprise patterns for maintainability and clarity.
 
 
 
@@ -395,6 +447,51 @@ each showroom. This is what you can use to help you choose times that you can sc
 
 The endpoints do not allow any overlap in showtime and showroom, which means no two movies can be played at the same place at the same time. You can also delete screenings as well.
 
+### Booking Endpoints
+| Method | Endpoint                                                      | Description                                                | Request Body (if needed)                                    |
+|--------|---------------------------------------------------------------|------------------------------------------------------------|-------------------------------------------------------------|
+| GET    | /api/bookings                                                 | Get all bookings                                           | None                                                        |
+| GET    | /api/bookings/{id}                                            | Get a booking by its ID                                    | None                                                        |
+| GET    | /api/bookings/customer/{customerId}                           | Get all bookings for a specific customer                   | None                                                        |
+| POST   | /api/bookings/customer/{customerId}/card/{cardId}?promoId=X   | Create a new booking with optional promo code              | None/Optional                                               |
+| DELETE | /api/bookings/{id}                                            | Delete a booking by its ID                                 | None                                                        |
+| PUT    | /api/bookings/{id}/send-confirmation-email                    | Send booking confirmation email                            | None                                                        |
+| PUT    | /api/bookings/{id}/refund                                     | Refund a booking (sets isRefunded to true)                 | None                                                        |
+
+Here are all the endpoints for creating bookings. You can see they contain a customer, date created, a list of tickets, and pricing information. Creating a booking is separate than creating tickets.
+Think of it like you have to create a box to put stuff in. You make a booking which acts as a single location to group tickets together. So create a booking for a customer, and then fill it with tickets
+sequentially. And then after creating a booking, then you want to send the confirmation email explicitly. Typically this is all handled in one request like logging in or something, but creating the 
+confirmation email is lowkey complicated so I thought it best and simplest to understand if they are kept separate. The flow then for this is create booking, create tickets for a booking, and then 
+send confirmation email once all of that is done!
+
+Refunding a booking is there because it\'s a requirement but it has no real functionality other than sending a refund email and setting isRefunded to true. Just allows a customer to decide to do this
+if they want.
+
+### Ticket Endpoints
+| Method | Endpoint                                                    | Description                                              | Request Body (if needed)                                |
+|--------|-------------------------------------------------------------|----------------------------------------------------------|---------------------------------------------------------|
+| GET    | /api/tickets                                                | Get all tickets                                          | None                                                    |
+| GET    | /api/tickets/{id}                                           | Get a specific ticket by its ID                          | None                                                    |
+| GET    | /api/tickets/booking/{bookingId}                            | Get all tickets for a given booking                      | None                                                    |
+| POST   | /api/tickets/booking/{bookingId}/seat/{seatId}/screening/{screeningId} | Create a ticket for a specific booking/seat/screening   | { "ticketType": "Adult" }                     |
+| DELETE | /api/tickets/{id}                                           | Delete a ticket by ID                                    | None                                                    |
+
+Here, the main endpoint is obviously creating tickets. This has to be done after creating a booking to hold them. Keep in mind that once you create a booking, create and add tickets, and then send
+the confirmation email, that is it. There is no updating the booking or adding/deleting tickets from the booking. Thats it. So make sure that you add all tickets necessary to the booking before you are done.
+Deleting tickets does not delete them from a booking. There really is no reason to delete a ticket explicitly. All tickets will be deleted as a function of database logic on their own if you delete
+a booking. So again, create booking, create tickets, send confirmation, leave it alone.
+
+### Ticket Pricing Endpoints
+
+| Method | Endpoint                               | Description                                                | Request Body (if needed)                                |
+|--------|----------------------------------------|------------------------------------------------------------|---------------------------------------------------------|
+| GET    | /api/ticket-prices                     | Get all current ticket prices                              | None                                                    |
+| PUT    | /api/ticket-prices/{type}?newPrice=X   | Update the price of a given ticket type                    | None                                                    |
+| GET    | /api/ticket-prices/online-fee          | Get the current online booking fee                         | None                                                    |
+| PUT    | /api/ticket-prices/online-fee?newFee=X | Update the online booking fee                              | None                                                    |
+
+Here are endpoints that allow you to control pricings. You can update the price of Adult, Senior, or Child tickets using this like /Child?newprice=5.00 for example. You can also
+do the same thing with online fees, which is just a flat rate applied to all bookings.
 
 ---
 
