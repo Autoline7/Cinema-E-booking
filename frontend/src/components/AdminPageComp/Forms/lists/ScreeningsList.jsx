@@ -25,7 +25,7 @@ const ScreeningsList = ({ initialScreenings, setScreeningsDeleted }) => {
               <br />
               Showroom: {screening.showroom.showroomId} (Seats: {screening.showroom.seatCapacity})
               <br />
-              <button onClick={() => handleDelete(screening.screeningId)} style={{ marginTop: '5px' }}>
+              <button className='screenings__list__button' onClick={() => handleDelete(screening.screeningId)}>
                 Delete
               </button>
             </li>

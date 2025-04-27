@@ -4,13 +4,17 @@ import axios from "axios";
 import SimpleAlert from "../SimpleAlert";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { formattedDate } from "../../utils/DateUtils";
 
-const AdminCustomer = ({customer}) => {
+const AdminCustomer = ({customer, editCustomerForm, setEditCustomerForm}) => {
 
 
   const [showAlert, setShowAlert] = useState(false);
   const [viewPaymentCards, setViewPaymentCards] = useState(false);
   const addressText = customer.address.street + " " + customer.address.city + " " + customer.address.state + " " + customer.address.zipCode + " " + customer.address.country 
+  const createdAtFormattedDate = formattedDate(customer.createdAt);
+  const loggedInFormattedDate = formattedDate(customer.lastLoggedIn);
+  const loggedOutFormattedDate = formattedDate(customer.lastLoggedOut);
   
 
   const paymentCardsText = customer.paymentCards
@@ -58,18 +62,20 @@ const AdminCustomer = ({customer}) => {
       ]
     });
   };
-  
-
-
-  
-  
-
 
   return (
       <div className="admin__customer">
               <div className="admin__customer__header">
                 <h3 className="admin__customer__title">{customer.firstName == null || customer.lastName == null ? "N/A" : customer.firstName + " " + customer.lastName}</h3>
-                <button className="admin__customer__edit__button">Edit</button>
+                <div>
+                <button onClick={() => 
+                  setEditCustomerForm(prevState => ({
+                    ...prevState,
+                    formOpen: prevState.customer?.userId === customer.userId ? !prevState.formOpen : true,
+                    customer: customer
+                  }))}
+                  className="admin__movie__edit__button">{editCustomerForm.formOpen && editCustomerForm.customer?.userId === customer.userId ? "Close" : "Edit"}</button>
+              </div>
               </div>
                 <div className="admin__customer__info">
                     <table className="admin__customer__info__table">
@@ -80,7 +86,7 @@ const AdminCustomer = ({customer}) => {
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Created At: </span></td>
-                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{customer.createdAt == null ? "N/A" : customer.createdAt}</span></td>
+                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{customer.createdAt == null ? "N/A" : createdAtFormattedDate}</span></td>
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Decrypted Password: </span></td>
@@ -100,15 +106,19 @@ const AdminCustomer = ({customer}) => {
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Last Logged In: </span></td>
-                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{customer.lastLoggedIn == null ? "N/A" : customer.lastLoggedIn}</span></td>
+                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{customer.lastLoggedIn == null ? "N/A" : loggedInFormattedDate}</span></td>
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Last Logged Out: </span></td>
-                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{customer.lastLoggedOut == null ? "N/A" : customer.lastLoggedOut}</span></td>
+                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{customer.lastLoggedOut == null ? "N/A" : loggedOutFormattedDate}</span></td>
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Role: </span></td>
                           <td className="admin__customer__td"><span className="admin__customer__info__span2">{customer.role == null ? "N/A" : customer.role}</span></td>
+                        </tr>
+                        <tr>
+                          <td className="admin__customer__td"><span className="admin__customer__info__span1">Status: </span></td>
+                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{customer.status == null ? "N/A" : customer.status}</span></td>
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Payment Card(s): </span></td>

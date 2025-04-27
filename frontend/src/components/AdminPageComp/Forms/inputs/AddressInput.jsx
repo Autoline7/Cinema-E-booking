@@ -1,6 +1,6 @@
 import React from "react";
 
-const AddressInput = ({ address, setAddress, label }) => {
+const AddressInput = ({ address, setAddress, label, required=true }) => {
   const handleChange = (field, value) => {
     // Construct the new address object here
     const newAddress = {
@@ -12,7 +12,7 @@ const AddressInput = ({ address, setAddress, label }) => {
 
   return (
     <div className="admin__form__review__att">
-      <label><span className="red">*</span>{label} Address</label>
+      {required?<label><span className="red">*</span>{label} Address</label>:<label>{label} Address</label>}
       <div className="admin__form__review__att__rating__addy">
         {["street", "city", "state", "zipCode", "country"].map((field) => (
           <div className="admin__form__review__att__rating__addy" key={field}>
@@ -22,7 +22,7 @@ const AddressInput = ({ address, setAddress, label }) => {
               placeholder={`Enter ${field}`}
               value={address[field] || ""} // Ensure default value if undefined
               onChange={(e) => handleChange(field, e.target.value)}
-              required
+              required={required}
             />
           </div>
         ))}

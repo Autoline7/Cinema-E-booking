@@ -30,11 +30,14 @@ const AdminMovie = ({movie, editMovieForm, setEditMovieForm}) => {
   const formattedShowtimes = showTimes.map(showTime => {
     const date = new Date(showTime.showtime);
     if (date instanceof Date && !isNaN(date)) {
-      return date.toLocaleString();
+      const datePart = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const timePart = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      return `${datePart} at ${timePart}`;
     } else {
       return ''; // Return empty if date is invalid
     }
   }).filter(time => time !== '').join(', ');
+  
 
   // Get all unique showroom IDs
   const showroomIds = [...new Set(
@@ -87,8 +90,6 @@ const AdminMovie = ({movie, editMovieForm, setEditMovieForm}) => {
       ]
     });
   };
-  
-
   
   
   return (

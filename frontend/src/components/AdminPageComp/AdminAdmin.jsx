@@ -4,11 +4,13 @@ import axios from "axios";
 import SimpleAlert from "../SimpleAlert";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { formattedDate } from "../../utils/DateUtils";
 
 const AdminAdmin = ({admin}) => {
-
-
   const [showAlert, setShowAlert] = useState(false);
+  const createdAtFormattedDate = formattedDate(admin.createdAt);
+  const loggedInFormattedDate = formattedDate(admin.lastLoggedIn);
+  const loggedOutFormattedDate = formattedDate(admin.lastLoggedOut);
 
 
 
@@ -66,7 +68,7 @@ const AdminAdmin = ({admin}) => {
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Created At: </span></td>
-                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{admin.createdAt == null ? "N/A" : admin.createdAt}</span></td>
+                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{admin.createdAt == null ? "N/A" : createdAtFormattedDate}</span></td>
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Decrypted Password: </span></td>
@@ -78,11 +80,11 @@ const AdminAdmin = ({admin}) => {
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Last Logged In: </span></td>
-                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{admin.lastLoggedIn == null ? "N/A" : admin.lastLoggedIn}</span></td>
+                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{admin.lastLoggedIn == null ? "N/A" : loggedInFormattedDate}</span></td>
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Last Logged Out: </span></td>
-                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{admin.lastLoggedOut == null ? "N/A" : admin.lastLoggedOut}</span></td>
+                          <td className="admin__customer__td"><span className="admin__customer__info__span2">{admin.lastLoggedOut == null ? "N/A" : loggedOutFormattedDate}</span></td>
                         </tr>
                         <tr>
                           <td className="admin__customer__td"><span className="admin__customer__info__span1">Role: </span></td>

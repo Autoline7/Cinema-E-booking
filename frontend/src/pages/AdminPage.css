@@ -345,6 +345,22 @@
     flex-direction: column;
   }
   
+  .screenings__list__button{
+    margin-top: 3px;
+    padding: 2px;
+    width: 50px;
+    height: 16px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: var(--primary-color);
+    color: var(--text--color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+  }
 
 
+  
 
