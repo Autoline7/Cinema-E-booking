@@ -17,6 +17,11 @@ const UserPage = () => {
   }, [customer]);
 
   useEffect(() => {
+    if (!customer) {
+      console.error("Not logged in. Redirecting to login...");
+      navigate("/Log-In");
+      return;
+    }
     const fetchMoviesAndScreenings = async () => {
       try {
         const res = await axios.get("http://localhost:8080/api/movies");

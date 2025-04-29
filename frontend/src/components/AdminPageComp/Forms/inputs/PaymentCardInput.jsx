@@ -1,6 +1,8 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
+
+const PaymentCardInput = ({ paymentCards, setPaymentCards, existingPaymentCards, handleDeletePaymentCard }) => {
   const [newCard, setNewCard] = useState({
     paymentCard: {
       decryptedCardNumber: "",
@@ -44,6 +46,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
 
     if (paymentCards.length < 4) {
       setPaymentCards([...paymentCards, newCard]);
+      // Only reset the form after successful validation and submission
       setNewCard({
         paymentCard: {
           decryptedCardNumber: "",
@@ -118,8 +121,53 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
         <p>No payment cards added. Cards are optional.</p>
       )}
 
+
+      {/* Display existing payment cards with delete buttons */}
+      {existingPaymentCards && existingPaymentCards.length > 0 && (
+              <div className="existing-payment-cards">
+                <label>Existing Payment Cards:</label>
+                <div className="payment-cards-list">
+                  {existingPaymentCards.map((card, index) => (
+                    <div key={card.cardId || index} className="payment-card-item">
+                      <div className="payment-card-details">
+                        <p>
+                          <strong>Card Number:</strong>{" "}
+                          {card.decryptedCardNumber || "••••••••••••" + (card.cardNumberLastFour || "••••")}
+                        </p>
+                        <p>
+                          <strong>Expiration Date:</strong> {card.expirationDate || "••/••"}
+                        </p>
+                        <p>
+                          <strong>CVV:</strong> {card.decryptedCvv || "•••"}
+                        </p>
+                        <div className="billing-address-details">
+                          <p><strong>Billing Address:</strong></p>
+                          <p>{card.billingAddress?.street || ""}</p>
+                          <p>
+                            {card.billingAddress?.city || ""}
+                            {card.billingAddress?.city && card.billingAddress?.state ? ", " : ""}
+                            {card.billingAddress?.state || ""} {card.billingAddress?.zipCode || ""}
+                          </p>
+                          <p>{card.billingAddress?.country || ""}</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="screenings__list__button"
+                        onClick={() => handleDeletePaymentCard(card.cardId)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
       {paymentCards.map((card, index) => (
+
         <div className="admin__form__review__att" key={index}>
+          <h3>Card On File</h3>
           <label>Billing Address</label>
           <div className="admin__form__review__att__rating__addy">
             <label>Street:</label>
@@ -127,9 +175,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
               type="text"
               placeholder="Enter Street Name"
               value={card.billingAddress.street}
-              onChange={(e) =>
-                handleCardChange(index, "billingAddress", "street", e.target.value)
-              }
+              disabled
               required
             />
 
@@ -138,9 +184,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
               type="text"
               placeholder="Enter City Name"
               value={card.billingAddress.city}
-              onChange={(e) =>
-                handleCardChange(index, "billingAddress", "city", e.target.value)
-              }
+              disabled
               required
             />
 
@@ -149,9 +193,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
               type="text"
               placeholder="Enter State Name"
               value={card.billingAddress.state}
-              onChange={(e) =>
-                handleCardChange(index, "billingAddress", "state", e.target.value)
-              }
+              disabled
               required
             />
 
@@ -160,9 +202,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
               type="text"
               placeholder="Enter Zip Code"
               value={card.billingAddress.zipCode}
-              onChange={(e) =>
-                handleCardChange(index, "billingAddress", "zipCode", e.target.value)
-              }
+              disabled
               required
             />
 
@@ -171,9 +211,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
               type="text"
               placeholder="Enter Country"
               value={card.billingAddress.country}
-              onChange={(e) =>
-                handleCardChange(index, "billingAddress", "country", e.target.value)
-              }
+              disabled
               required
             />
           </div>
@@ -184,13 +222,12 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
             <input
               type="text"
               placeholder="Enter Card Number"
-              value={card.paymentCard.decryptedCardNumber}
-              onChange={(e) =>
-                handleCardChange(index, "paymentCard", "decryptedCardNumber", e.target.value)
-              }
+              value={card.paymentCard?.decryptedCardNumber || card.decryptedCardNumber}
+              disabled
               required
               pattern="\d{16}"
               maxLength={16}
+              minLength={16}
               inputMode="numeric"
             />
 
@@ -198,23 +235,20 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
             <input
               type="text"
               placeholder="Enter CVV"
-              value={card.paymentCard.decryptedCvv}
-              onChange={(e) =>
-                handleCardChange(index, "paymentCard", "decryptedCvv", e.target.value)
-              }
+              value={card.paymentCard?.decryptedCvv || card.decryptedCvv}
               required
               pattern="\d{3}"
               maxLength={3}
+              minLength={3}
+              disabled
               inputMode="numeric"
             />
 
             <label>Expiration Date:</label>
             <input
               type="date"
-              value={card.paymentCard.expirationDate}
-              onChange={(e) =>
-                handleCardChange(index, "paymentCard", "expirationDate", e.target.value)
-              }
+              value={card.paymentCard?.expirationDate || card.expirationDate}
+              disabled
               required
             />
           </div>
@@ -299,6 +333,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
               }
               pattern="\d{16}"
               maxLength={16}
+              minLength={16}
               inputMode="numeric"
             />
 
@@ -312,6 +347,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards }) => {
               }
               pattern="\d{3}"
               maxLength={3}
+              minLength={3}
               inputMode="numeric"
             />
 

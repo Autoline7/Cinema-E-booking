@@ -5,7 +5,6 @@ const AdminCode = ({code}) => {
       <div className="admin__code">
               <div className="admin__code__header">
                 <h3 className="admin__code__title">{code.promoCode}</h3>
-                <button className="admin__code__edit__button">Edit</button>
               </div>
               <div className="admin__movie__info">
                 <table className="admin__movie__info__table">

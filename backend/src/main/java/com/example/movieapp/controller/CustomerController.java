@@ -37,16 +37,16 @@ public class CustomerController {
 
     // Create new customer
     @PostMapping
-    public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
-
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
         try {
             Customer createdCustomer = customerService.createCustomer(customer);
             verificationCodeStore.removeCode(customer.getEmail()); // Remove code after successful registration
-            return ResponseEntity.ok().body("{\"message\": \"Customer created successfully\", \"customer\": " + createdCustomer + "}");
+            return ResponseEntity.ok(createdCustomer);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\": \"" + e.getMessage() + "\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
 
     // Return all customers
      @GetMapping

@@ -5,7 +5,6 @@ const ScreeningsList = ({ initialScreenings, setScreeningsDeleted }) => {
   const handleDelete = (idToDelete) => {
     setScreeningsDeleted(prev => [...prev, idToDelete]);
     setScreenings(prev => prev.filter(screening => screening.screeningId !== idToDelete));
-    console.log(idToDelete)
   };
 
   useEffect(() =>{

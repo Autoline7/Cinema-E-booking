@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../LogIn-SignUp.css";
+import Swal from 'sweetalert2'
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ const LogIn = () => {
       const role = logResponse.data.role;
       
       
-      if(role === "ADMIN"){
+       if(role === "ADMIN"){
         const response = await axios.get(`http://localhost:8080/api/admins/email/${email}`);
         localStorage.setItem("admin", JSON.stringify(response.data));
         navigate("/Admin-DashBoard");
@@ -30,9 +31,22 @@ const LogIn = () => {
         const response = await axios.get(`http://localhost:8080/api/customers/email/${email}`);
         localStorage.setItem("customer", JSON.stringify(response.data));
         navigate("/User-Dashboard");
-      }
+      } 
     } catch (e) {
-      alert("Invalid Email or Password. Please try again.");
+      if (e.response?.status === 403) {
+        Swal.fire({
+          title: "Your Account is Suspended. Contact Support.",
+          icon: "error",
+          confirmButtonColor: "#e50914"
+      });
+      } else {
+        Swal.fire({
+          title: "Invalid Email or Password. Please try again.",
+          icon: "error",
+          confirmButtonColor: "#e50914"
+      });
+        
+      }
     }
   }
 

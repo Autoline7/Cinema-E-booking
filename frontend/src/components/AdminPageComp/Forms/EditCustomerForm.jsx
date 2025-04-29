@@ -4,6 +4,7 @@ import SimpleAlert from "../../SimpleAlert";
 import Selector from "../../Selector";
 import PaymentCardInput from "./inputs/PaymentCardInput";
 import AddressInput from "./inputs/AddressInput";
+import Swal from 'sweetalert2'
 
 const EditCustomerForm = ({ customer }) => {
   const [formData, setFormData] = useState({
@@ -89,7 +90,11 @@ const EditCustomerForm = ({ customer }) => {
         prevCards.filter(card => card.cardId !== card.cardId)
       );
       
-      handleAlert("Payment card removed successfully!");
+      Swal.fire({
+        title: "Payment card removed successfully!",
+        icon: "success",
+        confirmButtonColor: "#e50914"
+    });
     } catch (error) {
       console.error("Error deleting payment card:", error);
       handleAlert("Failed to delete payment card. Please try again.");
@@ -264,43 +269,6 @@ const EditCustomerForm = ({ customer }) => {
           required={true}
         />
 
-        {/* Display existing payment cards with delete buttons */}
-        {existingPaymentCards.length > 0 && (
-          <div className="existing-payment-cards">
-            <label>Existing Payment Cards:</label>
-            <div className="payment-cards-list">
-              {existingPaymentCards.map((card, index) => (
-                <div key={card.id || index} className="payment-card-item">
-                  <div className="payment-card-details">
-                    <p>
-                      <strong>Card Number:</strong> {card.decryptedCardNumber}
-                    </p>
-                    <p>
-                      <strong>Expiration Date:</strong> {card.expirationDate}
-                    </p>
-                    <p>
-                      <strong>CVV:</strong> {card.decryptedCvv}
-                    </p>
-                    <div className="billing-address-details">
-                      <p><strong>Billing Address:</strong></p>
-                      <p>{card.billingAddress?.street}</p>
-                      <p>{card.billingAddress?.city}, {card.billingAddress?.state} {card.billingAddress?.zipCode}</p>
-                      <p>{card.billingAddress?.country}</p>
-                    </div>
-                  </div>
-                  <button 
-                    type="button" 
-                    className="screenings__list__button"
-                    onClick={() => handleDeletePaymentCard(card.cardId)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Input for new payment cards */}
         <label htmlFor="paymentCards">
           Add New Payment Card(s):
@@ -308,6 +276,8 @@ const EditCustomerForm = ({ customer }) => {
         <PaymentCardInput
           paymentCards={newPaymentCards}
           setPaymentCards={setNewPaymentCards}
+          existingPaymentCards={existingPaymentCards}
+          handleDeletePaymentCard={handleDeletePaymentCard}
         />
 
         <div className="admin__add__customer__form__button__container">

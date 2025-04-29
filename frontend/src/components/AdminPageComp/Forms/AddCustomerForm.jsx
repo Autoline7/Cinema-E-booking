@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import axios from "axios";
 import SimpleAlert from "../../SimpleAlert";
 import Selector from "../../Selector";
 import PaymentCardInput from "./inputs/PaymentCardInput";
 import AddressInput from "./inputs/AddressInput";
+import Swal from 'sweetalert2'
 
 const AddCustomerForm = () => {
   const [formData, setFormData] = useState({
@@ -71,20 +72,11 @@ const AddCustomerForm = () => {
       handleAlert();
       setTimeout(() => window.location.reload(), 3000);
     } catch (error) {
-      console.error("Error creating customer or processing data:", error);
-      if (error.response) {
-        console.error("Server responded with:", error.response.data);
-        alert(
-          `Server Error: ${error.response.data.message ||
-            error.response.statusText}`
-        );
-      } else if (error.request) {
-        console.error("No response received:", error.request);
-        alert("No response received from the server.");
-      } else {
-        console.error("Error setting up the request:", error.message);
-        alert(`An error occurred: ${error.message}`);
-      }
+      Swal.fire({
+              title: "There was an error",
+              icon: "error",
+              confirmButtonColor: "#e50914"
+      });
     }
   };
 

@@ -6,7 +6,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { formattedDate } from "../../utils/DateUtils";
 
-const AdminAdmin = ({admin}) => {
+const AdminAdmin = ({admin, editAdminForm, setEditAdminForm}) => {
   const [showAlert, setShowAlert] = useState(false);
   const createdAtFormattedDate = formattedDate(admin.createdAt);
   const loggedInFormattedDate = formattedDate(admin.lastLoggedIn);
@@ -57,7 +57,15 @@ const AdminAdmin = ({admin}) => {
       <div className="admin__admin">
               <div className="admin__customer__header">
                 <h3 className="admin__customer__title">{admin.firstName == null || admin.lastName == null ? "N/A" : admin.firstName + " " + admin.lastName}</h3>
-                <button className="admin__customer__edit__button">Edit</button>
+                <div>
+                <button onClick={() => 
+                  setEditAdminForm(prevState => ({
+                    ...prevState,
+                    formOpen: prevState.admin?.userId === admin.userId ? !prevState.formOpen : true,
+                    admin: admin
+                  }))}
+                  className="admin__movie__edit__button">{editAdminForm.formOpen && editAdminForm.admin?.userId === admin.userId ? "Close" : "Edit"}</button>
+                </div>
               </div>
                 <div className="admin__customer__info">
                     <table className="admin__customer__info__table">

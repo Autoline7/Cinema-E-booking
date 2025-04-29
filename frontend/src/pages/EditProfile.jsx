@@ -3,91 +3,162 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./EditProfile.css";
 import PaymentCardInput from "../components/AdminPageComp/Forms/inputs/PaymentCardInput";
+import Swal from 'sweetalert2'
 
 const EditProfile = () => {
   const navigate = useNavigate();
-  const customer = JSON.parse(localStorage.getItem("customer")) || null;
-  const customerId = customer?.userId;
+  const initialCustomerData = JSON.parse(localStorage.getItem("customer")) || null;
+  const customerId = initialCustomerData?.userId;
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [paymentCards, setPaymentCards] = useState([]);
   const [password, setPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [isSubscriber, setIsSubscriber] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [existingPaymentCards, setExistingPaymentCards] = useState([]);
+  const [newPaymentCards, setNewPaymentCards] = useState([]);
 
+  // Fetch customer data from the server on mount
   useEffect(() => {
-    setFirstName(customer.firstName || "");
-    setLastName(customer.lastName || "");
-    setEmail(customer.email || "");
-    setPaymentCards(customer.paymentCards || []);
-    setIsSubscriber(customer.isSubscriber || false);
-  }, []);
+    const fetchCustomerData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/customers/${customerId}`);
+        const customerData = response.data;
+        setFirstName(customerData.firstName || "");
+        setLastName(customerData.lastName || "");
+        setEmail(customerData.email || "");
+        setIsSubscriber(customerData.isSubscriber || false);
+        setExistingPaymentCards(customerData.paymentCards || []);
+
+        // Update local storage with fresh data
+        localStorage.setItem("customer", JSON.stringify(customerData));
+      } catch (error) {
+        console.error("Error fetching customer data:", error);
+      }
+    };
+
+    if (customerId) {
+      fetchCustomerData();
+    }
+  }, [customerId]);
+
+  // Fetch the latest payment cards data
+  const refreshPaymentCards = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/customers/${customerId}`);
+      const customerData = response.data;
+      setExistingPaymentCards(customerData.paymentCards || []);
+
+      // Update local storage
+      const updatedCustomer = {
+        ...JSON.parse(localStorage.getItem("customer")),
+        paymentCards: customerData.paymentCards,
+      };
+      localStorage.setItem("customer", JSON.stringify(updatedCustomer));
+    } catch (error) {
+      console.error("Error fetching updated payment cards:", error);
+    }
+  };
+
+  const handleAlert = (message) => {
+    alert(message);
+  };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
     try {
+      // Basic profile update
       const updatedData = {
         firstName,
         lastName,
-        paymentCards,
-        password: password || undefined,
-        currentPassword: password ? currentPassword : undefined,
-        isSubscriber : isSubscriber,
+        isSubscriber,
       };
 
+      // Handle profile update
       await axios.put(`http://localhost:8080/api/customers/${customerId}`, updatedData);
-      alert("Profile updated successfully!");
 
-      if(showPayment){
+      Swal.fire({
+        title: "Profile Updated Successfully!!!",
+        icon: "success",
+        confirmButtonColor: "#e50914"
+      });
+
+      // Handle payment cards
+      if (showPayment && newPaymentCards.length > 0) {
         try {
-          const customerId = customer.userId;
-          for (const paymentCard of paymentCards) {
-            const changePassResponse = await axios.post(
+          for (const paymentCard of newPaymentCards) {
+            await axios.post(
               `http://localhost:8080/api/payment-cards/customer/${customerId}/new-address`,
               paymentCard
-            );}
-          alert("Payment Cards updated successfully!");
+            );
+          }
+
+          // Refresh payment cards after adding new ones
+          await refreshPaymentCards();
+          handleAlert("Payment Cards added successfully!");
+          setNewPaymentCards([]); // Clear new payment cards input
         } catch (error) {
           console.error("Error updating payment card:", error.response?.data || error.message);
-          alert(`Failed to change password: ${error.response?.data?.message || "Unknown error"}`);
+          handleAlert(`Error updating payment card: ${error.response?.data?.message || "Unknown error"}`);
           return;
         }
       }
 
+      // Handle password change
       if (showPassword) {
         if (!password || !currentPassword) {
-          alert("Please enter both your current and new password.");
+          handleAlert("Please enter both your current and new password.");
           return;
         }
-        setCurrentPassword(customer.decryptedPassword);
+
         const changePass = {
-          email: email,
+          email,
           oldPassword: currentPassword,
           newPassword: password,
         };
+
         try {
-          const changePassResponse = await axios.post(
-            `http://localhost:8080/api/customers/change-password`,
-            changePass
-          );
-          alert("Password updated successfully!");
+          await axios.post(`http://localhost:8080/api/customers/change-password`, changePass);
+          handleAlert("Password updated successfully!");
+          setPassword("");
+          setCurrentPassword("");
+          setShowPassword(false);
         } catch (error) {
           console.error("Error changing password:", error.response?.data || error.message);
-          alert(`Failed to change password: ${error.response?.data?.message || "Unknown error"}`);
+          handleAlert(`Failed to change password: ${error.response?.data?.message || "Unknown error"}`);
           return;
         }
       }
 
-      localStorage.setItem("customer", JSON.stringify({ ...customer, ...updatedData }));
+      // Update local storage with new customer data
+      const updatedCustomer = {
+        ...JSON.parse(localStorage.getItem("customer")),
+        firstName,
+        lastName,
+        isSubscriber,
+      };
+      localStorage.setItem("customer", JSON.stringify(updatedCustomer));
+
+      // Navigate after all updates are complete
       navigate("/User-Dashboard");
     } catch (error) {
       console.error("Error updating profile:", error.response?.data || error.message);
-      alert(`Failed to update profile: ${error.response?.data?.message || "Unknown error"}`);
+      handleAlert(`Failed to update profile: ${error.response?.data?.message || "Unknown error"}`);
+    }
+  };
+
+  const handleDeletePaymentCard = async (cardId) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/payment-cards/${cardId}`);
+      await refreshPaymentCards(); // Refresh cards after deletion
+      handleAlert("Payment card removed successfully!");
+    } catch (error) {
+      console.error("Error deleting payment card:", error);
+      handleAlert("Failed to delete payment card. Please try again.");
     }
   };
 
@@ -131,8 +202,16 @@ const EditProfile = () => {
 
         {showPayment && (
           <div className="input-group">
-            <label>Payment Card(s):</label>
-            <PaymentCardInput paymentCards={paymentCards} setPaymentCards={setPaymentCards} required />
+            
+
+            {/* Input for new payment cards */}
+            <label htmlFor="paymentCards">Add New Payment Card(s):</label>
+            <PaymentCardInput
+              paymentCards={newPaymentCards}
+              setPaymentCards={setNewPaymentCards}
+              existingPaymentCards={existingPaymentCards}
+              handleDeletePaymentCard={handleDeletePaymentCard}
+            />
           </div>
         )}
 
@@ -148,30 +227,32 @@ const EditProfile = () => {
         {showPassword && (
           <>
             <div className="input-group">
-              <label>New Password:</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter new password"
-                required
-              />
-            </div>
-            <div className="input-group">
               <label>Current Password:</label>
               <input
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Enter current password to confirm"
-                required
+                required={showPassword}
+              />
+            </div>
+            <div className="input-group">
+              <label>New Password:</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter new password"
+                required={showPassword}
               />
             </div>
           </>
         )}
 
         <button type="submit" className="save-button">Save Changes</button>
-        <button type="button" className="cancel-button" onClick={() => navigate("/User-Dashboard")}>Cancel</button>
+        <button type="button" className="cancel-button" onClick={() => navigate("/User-Dashboard")}>
+          Cancel
+        </button>
       </form>
     </div>
   );

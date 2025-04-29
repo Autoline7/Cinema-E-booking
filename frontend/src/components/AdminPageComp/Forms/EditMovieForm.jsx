@@ -180,12 +180,10 @@ const EditMovieForm = ({movie}) => {
                 console.error("No movie ID available");
                 return;
             }
-            console.log(showTimesData);
             for (const showTime of showTimesData) {
                 await axios.delete(
                     `http://localhost:8080/api/screenings/${showTime}`
                 );
-                console.log("screening deleted");
             }
         } catch (error) {
             console.error("Error creating screenings:", error);
@@ -196,7 +194,6 @@ const EditMovieForm = ({movie}) => {
     async function fetchScreenings(id) {
         try {
             const response = await axios.get(`http://localhost:8080/api/screenings/movie/id/${id}`);
-            console.log(response.data)
             return response.data; // Return the entire showtime data
         } catch (error) {
             throw error;

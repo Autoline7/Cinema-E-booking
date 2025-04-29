@@ -141,6 +141,9 @@
 
 .admin__movie__title, .admin__customer__title, .admin__code__title{
     color: black;
+    width: 100%;
+    border-bottom: 3px var(--primary-color) solid;
+    margin-bottom: 25px;
 }
 
 .admin__movie__edit__button, .admin__customer__edit__button, .admin__code__edit__button{

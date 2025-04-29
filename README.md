@@ -396,6 +396,7 @@ for an admin will also work for a customer.
 | **POST**   | `/api/promotions`                          | `{ "promoCode": "SAVE10", "description": "Get 10% off all tickets!", "discountPercentage": 10.00, "expirationDate": "2025-12-31" }` | Creates a new promotion and sends an email to all subscribed customers |
 | **GET**    | `/api/promotions/{id}`                     | None                                                              | Fetches a promotion by its ID                 |
 | **GET**    | `/api/promotions`                          | None                                                              | Fetches all promotions                        |
+| **GET**    | `/api/promotions/code/{code}`              | None                                                              | Fetches a promotion by code                   |
 | **PUT**    | `/api/promotions/{id}`                     | `{ "description": "Updated discount for the holidays!", "discountPercentage": 15.00, "expirationDate": "2025-12-31" }` | Updates an existing promotion (excluding the promo code) |
 | **DELETE** | `/api/promotions/{id}`                     | None                                                              | Deletes a promotion by ID                     |
 
@@ -489,6 +490,7 @@ a booking. So again, create booking, create tickets, send confirmation, leave it
 | PUT    | /api/ticket-prices/{type}?newPrice=X   | Update the price of a given ticket type                    | None                                                    |
 | GET    | /api/ticket-prices/online-fee          | Get the current online booking fee                         | None                                                    |
 | PUT    | /api/ticket-prices/online-fee?newFee=X | Update the online booking fee                              | None                                                    |
+| POST   | /api/ticket-prices/calculate-prices    | Update the online booking fee                              | { "ticketPrices": [12.00, 8.00, 6.00], "promoCode": "SPRING20" } |
 
 Here are endpoints that allow you to control pricings. You can update the price of Adult, Senior, or Child tickets using this like /Child?newprice=5.00 for example. You can also
 do the same thing with online fees, which is just a flat rate applied to all bookings.

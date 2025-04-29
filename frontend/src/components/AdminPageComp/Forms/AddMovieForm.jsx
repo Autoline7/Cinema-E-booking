@@ -3,6 +3,7 @@ import axios from "axios";
 import SimpleAlert from "../../SimpleAlert";
 import Selector from '../../Selector';
 import ShowtimesInput from './inputs/ShowtimesInput';
+import Swal from 'sweetalert2'
 
 const AddMovieForm = () => {
     const [datesWithShowtimes, setDatesWithShowtimes] = useState({});
@@ -96,8 +97,11 @@ const AddMovieForm = () => {
               }, 3000);
               
         } catch (error) {
-            console.error("Error creating movie or screenings:", error);
-            alert("Failed to create movie or screenings. Please try again.");
+            Swal.fire({
+                title: "Failed to create movie or screenings. Please try again.",
+                icon: "error",
+                confirmButtonColor: "#e50914"
+            });
         }
     };
 

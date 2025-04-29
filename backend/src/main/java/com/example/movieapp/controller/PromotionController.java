@@ -5,6 +5,7 @@ import com.example.movieapp.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -24,6 +25,18 @@ public class PromotionController {
     public ResponseEntity<List<Promotion>> getAllPromotions() {
         return ResponseEntity.ok(promotionService.getAllPromotions());
     }
+
+    @GetMapping("/code/{promoCode}")
+    public ResponseEntity<?> getPromotionByCode(@PathVariable String promoCode) {
+        Optional<Promotion> promo = promotionService.getPromotionByCode(promoCode);
+        if (promo.isPresent()) {
+            return ResponseEntity.ok(promo.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Promotion with code '" + promoCode + "' not found.");
+        }
+    }
+
 
     // Create new promotion
     @PostMapping

@@ -58,6 +58,11 @@ public class PromotionService {
         return savedPromotion;
     }
 
+    public Optional<Promotion> getPromotionByCode(String promoCode) {
+        return promotionRepository.findByPromoCodeIgnoreCase(promoCode);
+    }
+
+
     // Get promotion by ID
     public Optional<Promotion> getPromotionById(int id) {
         return promotionRepository.findById(id);

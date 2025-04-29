@@ -26,7 +26,7 @@ public class Booking {
     private LocalDateTime bookingDate;
 
     @ManyToOne
-    @JoinColumn(name = "payment_card_id", nullable = false)
+    @JoinColumn(name = "payment_card_id", nullable = true)
     private PaymentCard paymentCard;
 
     @ManyToOne
