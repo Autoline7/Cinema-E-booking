@@ -17,11 +17,11 @@ const AdminPage = () => {
   const admin = JSON.parse(localStorage.getItem("admin")) || null;
 
   useEffect(() => {
-    if (!admin) {
+    /* if (!admin) {
       console.error("No email found. Redirecting to login...");
       navigate("/Log-In");
       return;
-    }
+    } */
 
     const fetchAdmin = async () => {
         setUserData(admin);

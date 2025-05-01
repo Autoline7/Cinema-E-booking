@@ -18,11 +18,11 @@ const UserPage = () => {
   }, [customer]);
 
   useEffect(() => {
-    if (!customer) {
+    /* if (!customer) {
       console.error("Not logged in. Redirecting to login...");
       navigate("/Log-In");
       return;
-    }
+    } */
 
     const fetchMoviesAndScreenings = async () => {
       try {
