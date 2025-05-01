@@ -74,3 +74,79 @@ h1, h2, h3 {
 .back-button:hover {
     background: #666;
 }
+
+.payment-section {
+    margin: 20px auto;
+    max-width: 500px;
+    text-align: left;
+}
+
+.payment-section h3 {
+    margin-bottom: 10px;
+    color: #e50914;
+}
+
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 auto 10px;
+}
+
+.card-option {
+    background: #333;
+    padding: 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+}
+
+.add-card-button {
+    background: #e50914;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.add-card-button:hover {
+    background: #bf0812;
+}
+
+.promo-code {
+    margin: 30px auto 10px;
+    max-width: 500px;
+    text-align: left;
+}
+
+.promo-code h3 {
+    margin-bottom: 8px;
+    color: #e50914;
+}
+
+.promo-code input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.promo-error {
+    color: #ff4d4f;
+    margin-top: 6px;
+    font-size: 0.9rem;
+}
+
+.promo-success {
+    color: #4caf50;
+    margin-top: 6px;
+    font-size: 0.9rem;
+}

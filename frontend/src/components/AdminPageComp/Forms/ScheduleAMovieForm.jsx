@@ -50,7 +50,6 @@ const ScheduleAMovieForm = () => {
               
         } catch (error) {
             console.error("Error scheduling movie or screenings:", error);
-            alert("Failed to schedule movie or screenings. Please try again.");
         }
     };
     

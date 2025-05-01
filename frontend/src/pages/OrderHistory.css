@@ -1,0 +1,77 @@
+.order-history-container {
+    background-color: #141414;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  .order-history-container h1 {
+    text-align: center;
+    color: #e50914;
+  }
+  
+  .loading, .empty {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .history-item {
+    background: #222;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 20px auto;
+    max-width: 600px;
+  }
+  
+  .history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .history-header h3 {
+    color: #e50914;
+    margin: 0;
+  }
+  
+  .history-card {
+    font-size: 0.9rem;
+    color: #ccc;
+    margin: 0;
+  }
+  
+  .history-tickets h4 {
+    margin-bottom: 8px;
+    color: #e50914;
+  }
+  
+  .history-ticket {
+    background: #333;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    list-style: none;
+  }
+  
+  .history-actions {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .history-button {
+    background: #e50914;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .history-button:hover {
+    background: #bf0812;
+  }
+  

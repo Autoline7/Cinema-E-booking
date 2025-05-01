@@ -7,6 +7,7 @@ import EditProfile from "./pages/EditProfile";
 import BookTicket from "./pages/BookTicket";
 import OrderSummary from "./pages/OrderSummary";
 import OrderConfirmation from "./pages/OrderConfirmation";
+import OrderHistory from "./pages/OrderHistory";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ForgotPassword from "./components/LogInComp/ForgotPassword";
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/Book-Ticket/:movieId" element={<BookTicket />} />
         <Route path="/Order-Summary" element={<OrderSummary />} />
         <Route path="/Order-Confirmation" element={<OrderConfirmation />} />
+        <Route path="/Order-History" element={<OrderHistory />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </Router>

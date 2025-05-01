@@ -69,4 +69,18 @@ h1 {
     margin-top: 8px;
 }
 
+.order-history-button {
+    background-color: #a00008;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: background 0.3s;
+}
 
+.order-history-button:hover {
+    background-color: #630005;
+}

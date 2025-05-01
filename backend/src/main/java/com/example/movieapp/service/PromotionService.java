@@ -51,7 +51,8 @@ public class PromotionService {
                 customer.getEmail(),
                 promotion.getDescription(),
                 promotion.getDiscountPercentage(),
-                promotion.getExpirationDate()
+                promotion.getExpirationDate(),
+                promotion.getPromoCode()
             );
         }
 

@@ -41,7 +41,6 @@ const AddAdminForm = () => {
     } catch (error) {
       console.error("Error creating customer or processing data:", error);  
         console.error("Error:", error.message);
-        alert(`An error occurred: ${error.message}`);
     }
   };
 

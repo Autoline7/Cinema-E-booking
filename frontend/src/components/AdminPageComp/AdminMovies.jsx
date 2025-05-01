@@ -4,8 +4,9 @@ import AddMovieForm from './Forms/AddMovieForm'
 import EditMovieForm from './Forms/EditMovieForm'
 import axios from "axios";
 import ScheduleAMovieForm from './Forms/ScheduleAMovieForm';
+import UpdatePricesForm from './Forms/UpdatePricesForm';
 
-const AdminMovies = ({addMovieForm, scheduleMovieForm}) => {
+const AdminMovies = ({addMovieForm, scheduleMovieForm, updatePricesForm}) => {
   const [movies, setMovies] = useState([]);
   const [editMovieForm, setEditMovieForm] = useState({ formOpen: false, movie: {} });
 
@@ -24,6 +25,7 @@ const AdminMovies = ({addMovieForm, scheduleMovieForm}) => {
         </div>
         {addMovieForm && <AddMovieForm />}
         {scheduleMovieForm && <ScheduleAMovieForm />}
+        {updatePricesForm && <UpdatePricesForm />}
         {editMovieForm.formOpen && <EditMovieForm movie={editMovieForm.movie} />}
     </div>
 

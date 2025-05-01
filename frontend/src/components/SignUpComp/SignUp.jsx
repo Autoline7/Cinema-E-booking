@@ -153,7 +153,9 @@ const SignUp = () => {
                     <InputField value={password} type="password" placeholder="Password.....(6 >= characters)" icon="lock" onChange={(e) => setPassword(e.target.value)} required={true}/>
                     <p className="registration__fields">* Required *</p>
                     <InputField value={phone} type="tel" placeholder="Phone Number" icon="call" onChange={(e) => setPhone(e.target.value)} required={true} />
-                    <div className="input-group">
+                    
+                    {location.pathname === "/Sign-Up" && <>
+                        <div className="input-group">
                         <label htmlFor="promotions-toggle">Subscribe to Promotions:</label>
                         <input
                             id="promotions-toggle"
@@ -161,9 +163,8 @@ const SignUp = () => {
                             checked={isSubscriber}
                             onChange={() => setIsSubscriber(!isSubscriber)}
                         />
-                    </div>
-                    
-                    {!isAdmin && (
+                        </div>
+                        {!isAdmin && (
                         <div className="input-group">
                             <label>Add Payment Card(s)</label>
                             <input
@@ -185,6 +186,8 @@ const SignUp = () => {
                             />
                         </div>
                     )}
+                    </>
+                }
                     
                     {location.pathname === "/Sign-Up/Admin" ? (
                         <>

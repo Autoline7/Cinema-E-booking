@@ -148,7 +148,7 @@ public class EmailService {
     }
 
     // Send promotional email to all subscribers
-    public void sendPromotionEmail(String to, String description, BigDecimal discount, Date expirationDate) {
+    public void sendPromotionEmail(String to, String description, BigDecimal discount, Date expirationDate, String promoCode) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -169,6 +169,7 @@ public class EmailService {
                         + "<p>" + description + "</p>"
                         + "<p><b>Discount:</b> " + discount + "% off</p>"
                         + "<p>" + expirationText + "</p>"
+                        + "<p><b>Code:</b> " + promoCode + "</p>"
                         + "<p>Act fast before it's gone!</p>";
 
             helper.setTo(to);

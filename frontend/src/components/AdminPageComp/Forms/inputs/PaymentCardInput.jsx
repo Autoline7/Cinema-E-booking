@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-
 const PaymentCardInput = ({ paymentCards, setPaymentCards, existingPaymentCards, handleDeletePaymentCard }) => {
   const [newCard, setNewCard] = useState({
     paymentCard: {
@@ -22,13 +21,21 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards, existingPaymentCards,
   const [showNewCardForm, setShowNewCardForm] = useState(false);
 
   useEffect(() => {
-    if (paymentCards.length > 4) {
-      setPaymentCards(paymentCards.slice(0, 4));
+    // CHANGED: Limit total cards (existing + new) to 3
+    const totalCards = paymentCards.length + (existingPaymentCards?.length || 0);
+    if (totalCards > 3) {
+      setPaymentCards(paymentCards.slice(0, 3 - (existingPaymentCards?.length || 0)));
     }
-  }, [paymentCards, setPaymentCards]);
+  }, [paymentCards, setPaymentCards, existingPaymentCards]);
 
   const handleAddCard = () => {
     if (!showNewCardForm) {
+      // CHANGED: Check if adding a new card would exceed the 3-card limit
+      const totalCards = paymentCards.length + (existingPaymentCards?.length || 0);
+      if (totalCards >= 3) {
+        setErrorMessage("You can only have up to 3 payment cards in total.");
+        return;
+      }
       setShowNewCardForm(true);
       return;
     }
@@ -44,7 +51,9 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards, existingPaymentCards,
       return;
     }
 
-    if (paymentCards.length < 4) {
+    // CHANGED: Check total cards before adding
+    const totalCards = paymentCards.length + (existingPaymentCards?.length || 0);
+    if (totalCards < 3) {
       setPaymentCards([...paymentCards, newCard]);
       // Only reset the form after successful validation and submission
       setNewCard({
@@ -64,7 +73,7 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards, existingPaymentCards,
       setShowNewCardForm(false);
       setErrorMessage("");
     } else {
-      setErrorMessage("You can only add up to 4 payment cards.");
+      setErrorMessage("You can only have up to 3 payment cards in total.");
     }
   };
 
@@ -121,51 +130,49 @@ const PaymentCardInput = ({ paymentCards, setPaymentCards, existingPaymentCards,
         <p>No payment cards added. Cards are optional.</p>
       )}
 
-
       {/* Display existing payment cards with delete buttons */}
       {existingPaymentCards && existingPaymentCards.length > 0 && (
-              <div className="existing-payment-cards">
-                <label>Existing Payment Cards:</label>
-                <div className="payment-cards-list">
-                  {existingPaymentCards.map((card, index) => (
-                    <div key={card.cardId || index} className="payment-card-item">
-                      <div className="payment-card-details">
-                        <p>
-                          <strong>Card Number:</strong>{" "}
-                          {card.decryptedCardNumber || "••••••••••••" + (card.cardNumberLastFour || "••••")}
-                        </p>
-                        <p>
-                          <strong>Expiration Date:</strong> {card.expirationDate || "••/••"}
-                        </p>
-                        <p>
-                          <strong>CVV:</strong> {card.decryptedCvv || "•••"}
-                        </p>
-                        <div className="billing-address-details">
-                          <p><strong>Billing Address:</strong></p>
-                          <p>{card.billingAddress?.street || ""}</p>
-                          <p>
-                            {card.billingAddress?.city || ""}
-                            {card.billingAddress?.city && card.billingAddress?.state ? ", " : ""}
-                            {card.billingAddress?.state || ""} {card.billingAddress?.zipCode || ""}
-                          </p>
-                          <p>{card.billingAddress?.country || ""}</p>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        className="screenings__list__button"
-                        onClick={() => handleDeletePaymentCard(card.cardId)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  ))}
+        <div className="existing-payment-cards">
+          <label>Existing Payment Cards:</label>
+          <div className="payment-cards-list">
+            {existingPaymentCards.map((card, index) => (
+              <div key={card.cardId || index} className="payment-card-item">
+                <div className="payment-card-details">
+                  <p>
+                    <strong>Card Number:</strong>{" "}
+                    {card.decryptedCardNumber || "••••••••••••" + (card.cardNumberLastFour || "••••")}
+                  </p>
+                  <p>
+                    <strong>Expiration Date:</strong> {card.expirationDate || "••/••"}
+                  </p>
+                  <p>
+                    <strong>CVV:</strong> {card.decryptedCvv || "•••"}
+                  </p>
+                  <div className="billing-address-details">
+                    <p><strong>Billing Address:</strong></p>
+                    <p>{card.billingAddress?.street || ""}</p>
+                    <p>
+                      {card.billingAddress?.city || ""}
+                      {card.billingAddress?.city && card.billingAddress?.state ? ", " : ""}
+                      {card.billingAddress?.state || ""} {card.billingAddress?.zipCode || ""}
+                    </p>
+                    <p>{card.billingAddress?.country || ""}</p>
+                  </div>
                 </div>
+                <button
+                  type="button"
+                  className="screenings__list__button"
+                  onClick={() => handleDeletePaymentCard(card.cardId)}
+                >
+                  Delete
+                </button>
               </div>
-            )}
+            ))}
+          </div>
+        </div>
+      )}
 
       {paymentCards.map((card, index) => (
-
         <div className="admin__form__review__att" key={index}>
           <h3>Card On File</h3>
           <label>Billing Address</label>

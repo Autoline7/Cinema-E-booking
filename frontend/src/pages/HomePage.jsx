@@ -5,6 +5,7 @@ import axios from "axios";
 
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchDate, setSearchDate] = useState(""); // NEW
   const [moviesData, setMoviesData] = useState([]);
   const [runningMovies, setRunningMovies] = useState([]);
   const [comingSoonMovies, setComingSoonMovies] = useState([]);
@@ -22,9 +23,14 @@ const HomePage = () => {
               const screeningRes = await axios.get(
                 `http://localhost:8080/api/screenings/movie/id/${movie.id}`
               );
-              return { ...movie, hasScreenings: screeningRes.data.length > 0 };
+              const screenings = screeningRes.data;
+              return {
+                ...movie,
+                hasScreenings: screenings.length > 0,
+                screenings: screenings,
+              };
             } catch {
-              return { ...movie, hasScreenings: false };
+              return { ...movie, hasScreenings: false, screenings: [] };
             }
           })
         );
@@ -43,10 +49,17 @@ const HomePage = () => {
   const filteredMovies = (list) =>
     list.filter((movie) => {
       const search = searchTerm.toLowerCase();
-      return (
+      const matchesText =
         movie.title.toLowerCase().includes(search) ||
-        movie.genre.toLowerCase().includes(search)
+        movie.genre.toLowerCase().includes(search);
+
+      if (!searchDate) return matchesText;
+
+      const dateMatch = movie.screenings?.some(
+        (s) => s.showtime.split("T")[0] === searchDate
       );
+
+      return matchesText && dateMatch;
     });
 
   const renderMovieCard = (movie) => (
@@ -83,6 +96,15 @@ const HomePage = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-bar"
+      />
+
+      {/* NEW: Date filter input */}
+      <input
+        type="date"
+        value={searchDate}
+        onChange={(e) => setSearchDate(e.target.value)}
+        className="search-bar"
+        style={{ marginTop: "10px" }}
       />
 
       <h2>Currently Running</h2>

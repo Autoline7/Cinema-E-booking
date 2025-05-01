@@ -130,7 +130,6 @@ const EditMovieForm = ({movie}) => {
               
         } catch (error) {
             console.error("Error creating movie or screenings:", error);
-            alert("Failed to create movie or screenings. Please try again.");
         }
     };
 

@@ -5,6 +5,7 @@ import axios from "axios";
 
 const UserPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchDate, setSearchDate] = useState(""); // NEW
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const customer = JSON.parse(localStorage.getItem("customer")) || null;
@@ -22,6 +23,7 @@ const UserPage = () => {
       navigate("/Log-In");
       return;
     }
+
     const fetchMoviesAndScreenings = async () => {
       try {
         const res = await axios.get("http://localhost:8080/api/movies");
@@ -33,9 +35,14 @@ const UserPage = () => {
               const screeningRes = await axios.get(
                 `http://localhost:8080/api/screenings/movie/id/${movie.id}`
               );
-              return { ...movie, hasScreenings: screeningRes.data.length > 0 };
+              const screenings = screeningRes.data;
+              return {
+                ...movie,
+                hasScreenings: screenings.length > 0,
+                screenings: screenings,
+              };
             } catch {
-              return { ...movie, hasScreenings: false };
+              return { ...movie, hasScreenings: false, screenings: [] };
             }
           })
         );
@@ -53,7 +60,9 @@ const UserPage = () => {
 
   const handleSignOut = async () => {
     try {
-      await axios.post("http://localhost:8080/api/customers/logout", { email: customer.email });
+      await axios.post("http://localhost:8080/api/customers/logout", {
+        email: customer.email,
+      });
       localStorage.removeItem("customer");
       navigate("/Log-In");
     } catch (error) {
@@ -64,10 +73,17 @@ const UserPage = () => {
   const filteredMovies = (list) =>
     list.filter((movie) => {
       const search = searchTerm.toLowerCase();
-      return (
+      const matchesText =
         movie.title.toLowerCase().includes(search) ||
-        movie.genre.toLowerCase().includes(search)
+        movie.genre.toLowerCase().includes(search);
+
+      if (!searchDate) return matchesText;
+
+      const dateMatch = movie.screenings?.some(
+        (s) => s.showtime.split("T")[0] === searchDate
       );
+
+      return matchesText && dateMatch;
     });
 
   const renderMovieCard = (movie) => (
@@ -85,7 +101,10 @@ const UserPage = () => {
       <p>
         <strong>MPAA Rating:</strong> {movie.mpaa}
       </p>
-      <button className="book-button" onClick={() => navigate(`/Book-Ticket/${movie.id}`)}>
+      <button
+        className="book-button"
+        onClick={() => navigate(`/Book-Ticket/${movie.id}`)}
+      >
         Book Movie
       </button>
     </div>
@@ -96,8 +115,15 @@ const UserPage = () => {
       <header className="header">
         <h1>Hi, {userName}</h1>
         <div className="user-buttons">
-          <button className="account-button" onClick={() => navigate("/Edit-Profile")}>My Account</button>
-          <button className="signout-button" onClick={handleSignOut}>Sign Out</button>
+          <button
+            className="account-button"
+            onClick={() => navigate("/Edit-Profile")}
+          >
+            My Account
+          </button>
+          <button className="signout-button" onClick={handleSignOut}>
+            Sign Out
+          </button>
         </div>
       </header>
 
@@ -107,6 +133,15 @@ const UserPage = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-bar"
+      />
+
+      {/* NEW: Date input filter */}
+      <input
+        type="date"
+        value={searchDate}
+        onChange={(e) => setSearchDate(e.target.value)}
+        className="search-bar"
+        style={{ marginTop: "10px" }}
       />
 
       <h2 className="user__h2">Currently Running</h2>

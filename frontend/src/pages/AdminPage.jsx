@@ -48,6 +48,7 @@ const AdminPage = () => {
   const [addAdminForm, setAdminForm] = useState(false);
   const [addCodeForm, setCodeForm] = useState(false);
   const [scheduleMovieForm, setScheduleMovieForm] = useState(false);
+  const [updatePricesForm, setUpdatePricesForm] = useState(false);
 
 
   return (
@@ -55,10 +56,10 @@ const AdminPage = () => {
         <Sidebar logout={logout} />
         <div className="admin__container">
           <Header loading={loading} userData={userData} />
-          <AdminNav scheduleMovieForm={scheduleMovieForm} setScheduleMovieForm={setScheduleMovieForm} setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm} setAdminForm={setAdminForm} addAdminForm={addAdminForm} setAddCodeForm={setCodeForm} addCodeForm={addCodeForm}/>
+          <AdminNav scheduleMovieForm={scheduleMovieForm} setScheduleMovieForm={setScheduleMovieForm} setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm} setAdminForm={setAdminForm} addAdminForm={addAdminForm} setAddCodeForm={setCodeForm} addCodeForm={addCodeForm} updatePricesForm={updatePricesForm} setUpdatePricesForm={setUpdatePricesForm}/>
           <hr />
           <Routes>
-            <Route index element={<AdminMovies addMovieForm={addMovieForm} scheduleMovieForm={scheduleMovieForm}/>} />
+            <Route index element={<AdminMovies addMovieForm={addMovieForm} scheduleMovieForm={scheduleMovieForm} updatePricesForm={updatePricesForm}/>} />
             <Route path="Manage-Users" element={<AdminUsers addCustomerForm={addCustomerForm} addAdminForm={addAdminForm}/>} />
             <Route path="Manage-PromoCodes" element={<AdminCodes addCodeForm={addCodeForm} />} />
           </Routes>
